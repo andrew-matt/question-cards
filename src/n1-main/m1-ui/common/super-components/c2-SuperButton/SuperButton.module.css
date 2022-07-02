@@ -1,0 +1,37 @@
+.default {
+    background-color: #61dafb;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: #282c34;
+    border-radius: 7px;
+    border: none;
+}
+
+.default:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.red {
+    background: darkred;
+}
+
+.red:enabled:active {
+    background-color: #282c34;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+    margin: 10px 0;
+    cursor: pointer;
+    color: #61dafb;
+    border-radius: 7px;
+    border: none;
+}
+
+.clicked {
+    background-color: #282c34;
+    color: #61dafb;
+}

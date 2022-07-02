@@ -1,0 +1,16 @@
+.range {
+    cursor: pointer;
+}
+
+.range_div {
+    display: flex;
+    width: 300px;
+}
+
+.left_span {
+    width: 30px;
+}
+
+.right_span {
+    width: 30px;
+}

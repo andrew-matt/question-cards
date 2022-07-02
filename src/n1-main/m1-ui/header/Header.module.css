@@ -1,0 +1,29 @@
+.header {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    transition: 1s;
+    transform: translate(-590px);
+}
+
+.header:hover {
+    transform: translate(0px);
+    cursor: pointer;
+}
+
+.link {
+    text-decoration: none;
+    margin: 10px;
+    color: lightsteelblue;
+}
+
+.link:hover {
+    color: orange;
+}
+
+.block {
+    padding-top: 5px;
+    margin-left: 10px;
+    width: 25px;
+    height: 25px;
+}

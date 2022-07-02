@@ -1,0 +1,16 @@
+.mainBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    font-size: x-large;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.errorInputContainer {
+    min-height: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

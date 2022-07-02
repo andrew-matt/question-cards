@@ -1,0 +1,8 @@
+.mainBlock {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: x-large;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
