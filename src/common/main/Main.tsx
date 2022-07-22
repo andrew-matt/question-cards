@@ -1,12 +1,12 @@
 import React from 'react';
 import {Route, Routes, Navigate} from 'react-router-dom';
-import {Login} from '../../../n2-features/f1-auth/a1-login/Login';
-import {Registration} from '../../../n2-features/f1-auth/a2-registration/Registration';
-import {Profile} from '../../../n2-features/f1-auth/a3-profile/Profile';
-import {Error404} from '../../../n2-features/f1-auth/a4-error404/Error404';
-import {PasswordReset} from '../../../n2-features/f1-auth/a5-passwordReset/PasswordReset';
-import {PasswordNew} from '../../../n2-features/f1-auth/a6-passwordNew/PasswordNew';
-import {Test} from '../../../n2-features/f1-auth/a7-test/Test';
+import {Login} from '../../features/auth/login/Login';
+import {Registration} from '../../features/auth/registration/Registration';
+import {Profile} from '../../features/auth/profile/Profile';
+import {Error404} from '../../features/auth/error404/Error404';
+import {PasswordReset} from '../../features/auth/passwordReset/PasswordReset';
+import {PasswordNew} from '../../features/auth/passwordNew/PasswordNew';
+import {Test} from '../../features/auth/test/Test';
 
 
 export const PATH = {

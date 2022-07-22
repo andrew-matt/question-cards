@@ -1,7 +1,7 @@
 import style from './Test.module.css';
-import SuperInputText from '../../../n1-main/m1-ui/common/super-components/c1-SuperInputText/SuperInputText';
-import SuperButton from '../../../n1-main/m1-ui/common/super-components/c2-SuperButton/SuperButton';
-import SuperCheckbox from '../../../n1-main/m1-ui/common/super-components/c3-SuperCheckbox/SuperCheckbox';
+import SuperInputText from '../../../common/super-components/SuperInputText/SuperInputText';
+import SuperButton from '../../../common/super-components/SuperButton/SuperButton';
+import SuperCheckbox from '../../../common/super-components/SuperCheckbox/SuperCheckbox';
 import {useState} from 'react';
 
 export const Test = () => {
