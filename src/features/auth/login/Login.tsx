@@ -1,59 +1,22 @@
-import { useFormik } from 'formik';
-import style from './Login.module.css'
-import {loginTC} from "./login-reducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, AppRootStateType} from "../../../app/store";
-import { Navigate } from 'react-router-dom';
-import {Profile} from "../profile/Profile";
+import {LoginForm} from "./LoginForm";
+import style from "./Login.module.css"
+import {NavLink} from "react-router-dom";
 
 export const Login = () => {
-    const dispatch:AppDispatch = useDispatch()
-    const isLogin = useSelector<AppRootStateType>((state) => state.login.isLoggedIn)
-
-    const formik = useFormik({
-        initialValues: {
-            email: "",
-            password:"",
-            rememberMe:false
-        },
-        onSubmit: (values) => {
-            dispatch(loginTC(values))
-        },
-    });
-
-    if (isLogin) {
-        return <Navigate to={'/profile'}/>
-    }
-
     return (
-        <div className={style.mainBlock}>
-            <form onSubmit={formik.handleSubmit}>
-                <label htmlFor="email">Email Address</label>
-                <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}
-                />
-                <label htmlFor="password">Password</label>
-                <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                />
-                <input
-                    id="rememberMe"
-                    name="rememberMe"
-                    type="checkbox"
-                    onChange={formik.handleChange}
-                    checked={formik.values.rememberMe}
-                />
+        <div className={style.login}>
+            <div className={style.login__wrapper}>
+                <h2 className={style.login__title}>
+                    Sign in
+                </h2>
+                <div className={style.login__form}>
+                    <LoginForm/>
+                </div>
 
-                <button type="submit">Submit</button>
-            </form>
+                <p className={style.login__text}>Don't have an account?</p>
+                <NavLink to={'/'} className={style.login__signUp}>Sigh up</NavLink>
+            </div>
+
         </div>
     )
 }

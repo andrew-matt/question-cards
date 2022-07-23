@@ -28,5 +28,4 @@ export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsTyp
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
 
-
 export default store;
