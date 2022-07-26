@@ -2,7 +2,43 @@
     display: flex;
     justify-content: center;
     margin-top: 10px;
-    font-size: x-large;
-    font-weight: bold;
-    letter-spacing: 2px;
+}
+
+.container {
+    text-align: center;
+    border: 1px solid lightgrey;
+    padding: 30px;
+    width: 400px;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1), -1px -1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 7px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.error {
+    text-align: start;
+    color: red;
+    min-height: 24px;
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: -8px;
+}
+
+.subtitle {
+    margin: 40px 0 20px 0;
+    font-size: 14px;
+    font-weight: 600;
+    opacity: .5;
+}
+
+.link {
+    cursor: pointer;
+    color: #366EFF;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: underline;
+    margin-bottom: 10px;
 }
