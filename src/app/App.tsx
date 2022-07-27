@@ -3,6 +3,7 @@ import './App.css';
 import {HashRouter} from 'react-router-dom';
 import {Header} from '../common/header/Header';
 import {Main} from '../common/main/Main';
+import {ErrorSnackbar} from '../common/errorSnackbar/ErrorSnackbar';
 
 function App() {
     return (
@@ -10,6 +11,7 @@ function App() {
             <HashRouter>
                 <Header/>
                 <Main/>
+                <ErrorSnackbar/>
             </HashRouter>
         </div>
     );
