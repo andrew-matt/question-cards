@@ -1,12 +1,13 @@
 import React from 'react';
-import {Route, Routes, Navigate} from 'react-router-dom';
+import {Route, Routes, Navigate, useParams} from 'react-router-dom';
 import {Login} from '../../features/auth/login/Login';
 import {Registration} from '../../features/auth/registration/Registration';
 import {Profile} from '../../features/auth/profile/Profile';
 import {Error404} from '../../features/auth/error404/Error404';
-import {PasswordReset} from '../../features/auth/passwordReset/PasswordReset';
+import {PasswordForgot} from '../../features/auth/passwordForgot/PasswordForgot';
 import {PasswordNew} from '../../features/auth/passwordNew/PasswordNew';
 import {Test} from '../../features/auth/test/Test';
+
 
 
 export const PATH = {
@@ -15,11 +16,12 @@ export const PATH = {
     PROFILE: '/profile',
     ERROR_404: '/error-404',
     PASSWORD_RESET: '/password-reset',
-    PASSWORD_NEW: '/password-new',
+    PASSWORD_NEW: '/password-new/:userToken',
     TEST: '/test',
 };
 
 export const Main = () => {
+
     return (
         <div>
             <Routes>
@@ -29,7 +31,7 @@ export const Main = () => {
                 <Route path={PATH.REGISTRATION} element={<Registration/>}/>
                 <Route path={PATH.PROFILE} element={<Profile/>}/>
                 <Route path={PATH.ERROR_404} element={<Error404/>}/>
-                <Route path={PATH.PASSWORD_RESET} element={<PasswordReset/>}/>
+                <Route path={PATH.PASSWORD_RESET} element={<PasswordForgot/>}/>
                 <Route path={PATH.PASSWORD_NEW} element={<PasswordNew/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
             </Routes>

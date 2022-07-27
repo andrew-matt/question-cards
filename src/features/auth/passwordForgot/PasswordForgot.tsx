@@ -1,11 +1,20 @@
-import style from './PasswordReset.module.css'
-import {PasswordResetForm} from "./PasswordResetForm";
+import style from './PasswordForgot.module.css'
+import {PasswordForgotForm} from "./PasswordForgotForm";
 import React, {useState} from "react";
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import checkEmail from '../../../assets/img/checkEmail.png'
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../../app/store";
+import {setIsPasswordResetAC} from "./password-forgot-reducer";
 
-export const PasswordReset = () => {
-    const [isPasswordReset, setIsPasswordReset] = useState(false)
+export const PasswordForgot = () => {
+
+    const isPasswordReset = useSelector<AppRootStateType>(state => state.passwordForgot.isPasswordReset)
+    const dispatch = useDispatch()
+
+    const seSwitchtIsResetPasswordToFalseHandler = () => {
+        dispatch(setIsPasswordResetAC(false))
+    }
 
     return (
         <>
@@ -18,7 +27,7 @@ export const PasswordReset = () => {
                             <p className={style.form__text }>
                                 We’ve sent an Email with instructions to example@mail.com
                             </p>
-                            <NavLink to={'/login'}>Back to login</NavLink>
+                            <NavLink to={'/login'} onClick={seSwitchtIsResetPasswordToFalseHandler}>Back to login</NavLink>
                         </div>
                     </div>
                     :
@@ -26,7 +35,7 @@ export const PasswordReset = () => {
                         <div className={style.passwordReset__wrapper}>
                             <h2 className={style.passwordReset__title}>Forgot your password?</h2>
                             <div className={style.passwordReset__form}>
-                                <PasswordResetForm setIsPasswordReset={setIsPasswordReset}/>
+                                <PasswordForgotForm/>
                             </div>
                             <p className={style.passwordReset__text}>
                                 Did you remember your password?

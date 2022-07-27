@@ -39,3 +39,4 @@ export const loginTC = (data: LoginParamsType):AppThunk => (dispatch) => {
             alert(err.response.data.error)
         })
 }
+

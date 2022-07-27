@@ -1,21 +1,21 @@
 import { useFormik } from 'formik';
 import React from 'react';
-import style from "./PasswordReset.module.css";
+import style from "./PasswordForgot.module.css";
 import TextField from "@mui/material/TextField/TextField";
 import {Button} from "@mui/material";
+import {forgotPasswordTC} from "../passwordForgot/password-forgot-reducer";
+import {AppDispatch} from "../../../app/store";
+import {useDispatch} from "react-redux";
 
-type PasswordResetFormPropsType = {
-    setIsPasswordReset: (value:boolean) => void
-}
 
-export const PasswordResetForm:React.FC<PasswordResetFormPropsType> = (props) => {
-    const {
-        setIsPasswordReset
-    } = props
+
+export const PasswordForgotForm:React.FC = () => {
 
     type FormikErrorType = {
         email?: string
     }
+
+    const dispatch:AppDispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -31,7 +31,7 @@ export const PasswordResetForm:React.FC<PasswordResetFormPropsType> = (props) =>
             return errors;
         },
         onSubmit: (values) => {
-            setIsPasswordReset(true)
+            dispatch(forgotPasswordTC(values.email))
         },
     });
     return (
