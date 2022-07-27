@@ -11,7 +11,7 @@ type initialStateType = {
     isChangedPassword:boolean
 }
 
-export const passwordNewReducer = (state: initialStateType = initialState, action: PasswordNewActionsType): initialStateType => {
+export const passwordNewReducer = (state: initialStateType = initialState, action: ActionsPasswordNewType): initialStateType => {
     switch (action.type) {
         case SET_IS_CHANGED_PASSWORD:
             return {...state, isChangedPassword: action.value}
@@ -21,7 +21,7 @@ export const passwordNewReducer = (state: initialStateType = initialState, actio
     }
 }
 
-export type PasswordNewActionsType = setIsChangedPasswordACType
+export type ActionsPasswordNewType = setIsChangedPasswordACType
 
 export const setIsChangedPasswordAC = (value:boolean) => ({type:SET_IS_CHANGED_PASSWORD, value} as const)
 type setIsChangedPasswordACType = ReturnType<typeof setIsChangedPasswordAC>

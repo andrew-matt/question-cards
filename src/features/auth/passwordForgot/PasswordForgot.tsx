@@ -12,7 +12,7 @@ export const PasswordForgot = () => {
     const isPasswordReset = useSelector<AppRootStateType>(state => state.passwordForgot.isPasswordReset)
     const dispatch = useDispatch()
 
-    const seSwitchtIsResetPasswordToFalseHandler = () => {
+    const seSwitchIsResetPasswordToFalseHandler = () => {
         dispatch(setIsPasswordResetAC(false))
     }
 
@@ -27,7 +27,7 @@ export const PasswordForgot = () => {
                             <p className={style.form__text }>
                                 We’ve sent an Email with instructions to example@mail.com
                             </p>
-                            <NavLink to={'/login'} onClick={seSwitchtIsResetPasswordToFalseHandler}>Back to login</NavLink>
+                            <NavLink to={'/login'} onClick={seSwitchIsResetPasswordToFalseHandler}>Back to login</NavLink>
                         </div>
                     </div>
                     :
