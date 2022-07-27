@@ -2,7 +2,7 @@ import style from './Registration.module.css';
 import {Button, FormGroup, TextField} from '@mui/material';
 import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from '../../../app/store';
+import {AppDispatch, AppRootStateType} from '../../../app/store';
 import {Navigate, NavLink} from 'react-router-dom';
 import {register} from './registration-reducer';
 import {PATH} from '../../../common/main/Main';
@@ -16,7 +16,7 @@ type FormikErrorType = {
 
 export const Registration = () => {
 
-    const dispatch = useDispatch();
+    const dispatch: AppDispatch = useDispatch();
     const isRegistered = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistered);
 
     const formik = useFormik({

@@ -1,6 +1,6 @@
 import {AxiosError} from 'axios';
 import {authAPI, RegisterParamsType} from '../../../api/cards-api';
-import {ActionTypes, AppDispatch} from '../../../app/store';
+import {ActionTypes, AppDispatch, AppThunk} from '../../../app/store';
 import {setAppErrorAC} from '../../../app/app-reducer';
 
 const initialState = {
@@ -23,7 +23,7 @@ export const registrationReducer = (state: InitialStateType = initialState, acti
 export const setIsRegistered = (isRegistered: boolean) => ({type: 'SET-IS-REGISTERED', isRegistered} as const);
 
 //thunks
-export const register = (data: RegisterParamsType): any => (dispatch: AppDispatch) => {
+export const register = (data: RegisterParamsType): AppThunk => (dispatch: AppDispatch) => {
     authAPI.register(data)
         .then(() => {
             dispatch(setIsRegistered(true));
