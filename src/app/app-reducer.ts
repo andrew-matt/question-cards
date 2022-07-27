@@ -1,10 +1,10 @@
-import {ActionTypes} from './store';
+import {AppActionsType} from './store';
 
 const initialState: InitialStateType = {
     error: null,
 };
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'APP/SET-ERROR':
             return {...state, error: action.error};

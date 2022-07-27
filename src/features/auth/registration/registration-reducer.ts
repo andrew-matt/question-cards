@@ -1,6 +1,6 @@
 import {AxiosError} from 'axios';
 import {authAPI, RegisterParamsType} from '../../../api/cards-api';
-import {ActionTypes, AppDispatch, AppThunk} from '../../../app/store';
+import {AppActionsType, AppDispatch, AppThunk} from '../../../app/store';
 import {setAppErrorAC} from '../../../app/app-reducer';
 
 const initialState = {
@@ -9,7 +9,7 @@ const initialState = {
 
 type InitialStateType = typeof initialState
 
-export const registrationReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+export const registrationReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
     switch (action.type) {
         case 'SET-IS-REGISTERED':
             return {...state, isRegistered: action.isRegistered};
