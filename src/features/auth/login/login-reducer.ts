@@ -1,5 +1,7 @@
 import {loginAPI, LoginParamsType} from "./login-api";
 import { AppThunk} from "../../../app/store";
+import { AxiosError } from "axios";
+import {setAppErrorAC, setAppRequestStatusAC} from "../../../app/app-reducer";
 
 
 const SET_IS_LOGGED_IN = "LOGIN/SET_IS_LOGGED_IN"
@@ -31,12 +33,19 @@ export type setIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>
 //THUNKS
 
 export const loginTC = (data: LoginParamsType):AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
     loginAPI.login(data)
         .then((res) => {
             dispatch(setIsLoggedInAC(true))
         })
-        .catch((err) => {
-            alert(err.response.data.error)
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+        })
+        .finally(() => {
+            dispatch(setAppRequestStatusAC('idle'))
         })
 }
 

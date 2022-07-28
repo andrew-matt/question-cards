@@ -1,6 +1,10 @@
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {ActionsLoginType, loginReducer} from '../features/auth/login/login-reducer';
-import {registrationReducer, setIsRegistered} from '../features/auth/registration/registration-reducer';
+import {
+    ActionsRegisterType,
+    registrationReducer,
+    setIsRegistered
+} from '../features/auth/registration/registration-reducer';
 import {profileReducer} from '../features/auth/profile/profile-reducer';
 import {errorReducer} from '../features/auth/error404/error-reducer';
 import {
@@ -9,7 +13,7 @@ import {
 } from '../features/auth/passwordForgot/password-forgot-reducer';
 import {ActionsPasswordNewType, passwordNewReducer} from '../features/auth/passwordNew/password-new-reducer';
 import {testReducer} from '../features/auth/test/test-reducer';
-import {appReducer, setAppErrorAC} from './app-reducer';
+import {ActionsAppReducerType, appReducer, setAppErrorAC} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 const rootReducer = combineReducers({
@@ -30,8 +34,8 @@ export type AppRootStateType = ReturnType<typeof rootReducer>
 export type AppActionsType = ActionsLoginType
     | ActionsForgotPasswordType
     | ActionsPasswordNewType
-    | ReturnType<typeof setIsRegistered>
-    | ReturnType<typeof setAppErrorAC>
+    | ActionsRegisterType
+    | ActionsAppReducerType
 
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsType>

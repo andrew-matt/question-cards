@@ -9,7 +9,7 @@ const initialState = {
 
 type InitialStateType = typeof initialState
 
-export const registrationReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
+export const registrationReducer = (state: InitialStateType = initialState, action: ActionsRegisterType): InitialStateType => {
     switch (action.type) {
         case 'SET-IS-REGISTERED':
             return {...state, isRegistered: action.isRegistered};
@@ -19,8 +19,11 @@ export const registrationReducer = (state: InitialStateType = initialState, acti
     }
 };
 
+export type ActionsRegisterType = setIsRegisteredType
+
 //actions
 export const setIsRegistered = (isRegistered: boolean) => ({type: 'SET-IS-REGISTERED', isRegistered} as const);
+type setIsRegisteredType = ReturnType<typeof setIsRegistered>
 
 //thunks
 export const register = (data: RegisterParamsType): AppThunk => (dispatch: AppDispatch) => {

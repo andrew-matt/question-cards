@@ -13,7 +13,7 @@ export const Login = () => {
                     <LoginForm/>
                 </div>
                 <p className={style.login__text}>Don't have an account?</p>
-                <NavLink to={'/'} className={style.login__signUp}>Sigh up</NavLink>
+                <NavLink to={'/registration'} className={style.login__signUp}>Sigh up</NavLink>
             </div>
 
         </div>
