@@ -1,5 +1,7 @@
 import {AppThunk} from "../../../app/store";
 import {loginAPI} from "../login/login-api";
+import {setAppErrorAC, setAppRequestStatusAC} from "../../../app/app-reducer";
+import {AxiosError} from "axios";
 
 const SET_IS_CHANGED_PASSWORD = 'PASSWORD-NEW/SET_IS_CHANGED_PASSWORD'
 
@@ -27,11 +29,18 @@ export const setIsChangedPasswordAC = (value:boolean) => ({type:SET_IS_CHANGED_P
 type setIsChangedPasswordACType = ReturnType<typeof setIsChangedPasswordAC>
 
 export const setNewPasswordTC = (password:string,resetPasswordToken:string):AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
     loginAPI.setNewPassword(password, resetPasswordToken)
         .then((res) => {
             dispatch(setIsChangedPasswordAC(true))
         })
-        .catch((err) => {
-            alert(err)
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+        })
+        .finally(() => {
+            dispatch(setAppRequestStatusAC('idle'))
         })
 }

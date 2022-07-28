@@ -1,16 +1,16 @@
 import React from 'react';
-import {AppDispatch, AppRootStateType} from "../../../app/store";
-import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch} from "../../../app/store";
+import {useDispatch} from "react-redux";
 import {useFormik} from "formik";
 import {loginTC} from "./login-reducer";
-import {Navigate, NavLink} from "react-router-dom";
+import { NavLink} from "react-router-dom";
 import style from "./Login.module.css";
 import TextField from '@mui/material/TextField/TextField';
 import {Button, Checkbox, FormControlLabel} from "@mui/material";
 
 export const LoginForm: React.FC = () => {
     const dispatch: AppDispatch = useDispatch()
-    const isLogin = useSelector<AppRootStateType>((state) => state.login.isLoggedIn)
+
 
     type FormikErrorType = {
         email?: string
@@ -44,9 +44,6 @@ export const LoginForm: React.FC = () => {
         },
     });
 
-    if (isLogin) {
-        return <Navigate to={'/profile'}/>
-    }
 
     return (
         <div>

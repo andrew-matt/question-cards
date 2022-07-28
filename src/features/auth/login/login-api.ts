@@ -9,7 +9,7 @@ export const loginAPI = {
     login(data:LoginParamsType) {
         return instance.post<ResponseLoginType>('auth/login', data)
     },
-    //forgot password uses another url, thus such a strange request
+    //"forgot password" uses another url, thus such a strange request
     forgotPassword(email:string) {
         return axios.post<ResponseForgotPasswordType>(
             'https://neko-back.herokuapp.com/2.0/auth/forgot',

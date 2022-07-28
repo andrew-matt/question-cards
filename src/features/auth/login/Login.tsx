@@ -1,8 +1,16 @@
 import {LoginForm} from "./LoginForm";
 import style from "./Login.module.css"
-import {NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../app/store";
+import React from "react";
 
 export const Login = () => {
+    const isLogin = useSelector<AppRootStateType>((state) => state.login.isLoggedIn)
+    if (isLogin) {
+        return <Navigate to={'/profile'}/>
+    }
+
     return (
         <div className={style.login}>
             <div className={style.login__wrapper}>
