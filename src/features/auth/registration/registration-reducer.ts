@@ -1,5 +1,5 @@
 import {AxiosError} from 'axios';
-import {authAPI, RegisterParamsType} from '../../../api/cards-api';
+import {authAPI, RegisterParamsType} from './auth-api';
 import {AppActionsType, AppDispatch, AppThunk} from '../../../app/store';
 import {setAppErrorAC} from '../../../app/app-reducer';
 

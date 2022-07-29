@@ -1,5 +1,5 @@
 import {AppActionsType, AppThunk} from './store';
-import {authAPI} from "../api/cards-api";
+import {authAPI} from "../features/auth/registration/auth-api";
 import {setIsLoggedInAC} from "../features/auth/login/login-reducer";
 import {AxiosError} from "axios";
 
