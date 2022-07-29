@@ -37,6 +37,7 @@ export type LoginParamsType = {
 }
 
 type ResponseLoginType = {
+    "avatar":string
     "_id": string
     "email": string
     "rememberMe": boolean

@@ -2,6 +2,7 @@ import {AppActionsType, AppThunk} from './store';
 import {authAPI} from "../features/auth/registration/auth-api";
 import {setIsLoggedInAC} from "../features/auth/login/login-reducer";
 import {AxiosError} from "axios";
+import {SetProfileAC} from "../features/auth/profile/profile-reducer";
 
 const initialState: InitialStateType = {
     error: null,
@@ -49,6 +50,7 @@ type setAppIsInitializedACType = ReturnType<typeof setAppIsInitializedAC>
 export const initializedAppTC = ():AppThunk => (dispatch) => {
     authAPI.me()
         .then((res) => {
+dispatch(SetProfileAC(res.data))
             dispatch(setIsLoggedInAC(true))
         })
         .catch((err: AxiosError<{ error: string }>) => {

@@ -20,6 +20,7 @@ export type RegisterParamsType = {
 }
 
 export type AuthMeResponseType = {
+    avatar:string
     "_id": string
     "email": string
     "rememberMe": boolean

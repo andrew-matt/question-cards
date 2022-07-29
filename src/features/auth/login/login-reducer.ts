@@ -2,6 +2,7 @@ import {loginAPI, LoginParamsType} from "./login-api";
 import { AppThunk} from "../../../app/store";
 import { AxiosError } from "axios";
 import {setAppErrorAC, setAppRequestStatusAC} from "../../../app/app-reducer";
+import {SetProfileAC} from "../profile/profile-reducer";
 
 
 const SET_IS_LOGGED_IN = "LOGIN/SET_IS_LOGGED_IN"
@@ -37,6 +38,7 @@ export const loginTC = (data: LoginParamsType):AppThunk => (dispatch) => {
     loginAPI.login(data)
         .then((res) => {
             dispatch(setIsLoggedInAC(true))
+            dispatch(SetProfileAC(res.data))
         })
         .catch((err: AxiosError<{ error: string }>) => {
             const error = err.response

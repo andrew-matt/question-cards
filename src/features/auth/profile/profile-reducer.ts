@@ -1,56 +1,101 @@
-import {Dispatch} from "redux";
 import {ProfileAPI} from "../profile/Profile-API";
+import {AppThunk} from "../../../app/store";
+import {AxiosError} from "axios";
+import {setAppErrorAC} from "../../../app/app-reducer";
 
+
+export type UserDataType= {
+    avatar: null | string
+    created: string
+    email: string
+    isAdmin: boolean
+    name: string
+    publicCardPacksCount: number
+    rememberMe: boolean
+    token: string | null
+    tokenDeathTime: number | null
+    updated: string
+    verified: boolean
+    __v: number | null
+    _id: string
+}
 type initialStateType={
-    _id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-    publicCardPacksCount: number; // количество колод
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean; // подтвердил ли почту
-    rememberMe: boolean;
-    error?: string;
+    UserData: UserDataType
 }
 
 const initialState:initialStateType = {
-    _id: '',
-    email: '',
-    name: '',
-    avatar: undefined,
-    publicCardPacksCount: 0, // количество колод
-    created: new Date,
-    updated: new Date,
-    isAdmin: false,
-    verified: false, // подтвердил ли почту
-    rememberMe: false,
-    error: ''
+    UserData: {
+        _id: '',
+        email: '',
+        name: '',
+        avatar: null,
+        publicCardPacksCount: 0,
+        created: '',
+        updated: '',
+        isAdmin: false,
+        verified: false,
+        rememberMe: false,
+        __v: null,
+        tokenDeathTime: null,
+        token: null
+    }
 };
 
-type ActionsType=ReturnType<typeof SetNewNameAC>
+export type ActionsProfileType=ReturnType<typeof SetNewNameAC>
+    | ReturnType<typeof SetProfileAC>
+|ReturnType<typeof SetNewPhotoAC>
 
-export const profileReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
+export const profileReducer = (state: initialStateType = initialState, action: ActionsProfileType): initialStateType => {
     switch (action.type) {
         case "SET-NEW-NAME":
-            return {...state, name:action.name}
+            return {...state, UserData:{...state.UserData, name: action.name}};
+        case "SET-PROFILE":
+            return {...state, UserData:{...state.UserData, ...action.profile} }
+        case "SET-NEW-PHOTO":
+            return {...state,UserData:{...state.UserData,avatar:action.photo}}
         default: {
             return state;
         }
     }
 };
 
+
+export const SetProfileAC=(profile:UserDataType)=>({
+    type:'SET-PROFILE',
+        profile
+}as const)
 export const SetNewNameAC = (name:string) => ({
     type: 'SET-NEW-NAME',
     name
-}) as const
+}as const)
+export const SetNewPhotoAC=(photo:string)=>({
+    type:'SET-NEW-PHOTO',
+    photo
+} as const )
 
-export const SetNameTC=(name:string)=>(dispatch:Dispatch)=>{
-    debugger
-    ProfileAPI.changeName(name)
+export const SetNameTC=(name:string):AppThunk=>(dispatch)=>{
+
+    ProfileAPI.changeNameorAvatar(name, '')
         .then(response => {
-debugger
-            dispatch( SetNewNameAC(response.data.name))
+            dispatch( SetNewNameAC(response.data.updatedUser.name))
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+        })
+}
+export const SetPhotoTC=(avatar:any):AppThunk=>(dispatch)=>{
+
+    ProfileAPI.changeNameorAvatar('',avatar)
+        .then(response => {
+            dispatch( SetNewPhotoAC(response.data.updatedUser.avatar))
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
         })
 }

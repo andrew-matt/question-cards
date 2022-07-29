@@ -5,7 +5,7 @@ import {
     registrationReducer,
     setIsRegistered
 } from '../features/auth/registration/registration-reducer';
-import {profileReducer} from '../features/auth/profile/profile-reducer';
+import {ActionsProfileType, profileReducer} from '../features/auth/profile/profile-reducer';
 import {errorReducer} from '../features/auth/error404/error-reducer';
 import {
     ActionsForgotPasswordType,
@@ -14,7 +14,7 @@ import {
 import {ActionsPasswordNewType, passwordNewReducer} from '../features/auth/passwordNew/password-new-reducer';
 import {testReducer} from '../features/auth/test/test-reducer';
 import {ActionsAppReducerType, appReducer, setAppErrorAC} from './app-reducer';
-import thunk, {ThunkAction, ThunkDispatch } from 'redux-thunk'
+import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -36,6 +36,7 @@ export type AppActionsType = ActionsLoginType
     | ActionsPasswordNewType
     | ActionsRegisterType
     | ActionsAppReducerType
+    | ActionsProfileType
 
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsType>

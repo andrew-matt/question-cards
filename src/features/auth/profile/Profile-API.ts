@@ -9,7 +9,7 @@ const instance= axios.create({
 })
 
 export const ProfileAPI = {
-    changeName: (name: string) => {
-        return instance.put(`auth/me` , {name:name, avatar:''})
+    changeNameorAvatar: (name: string, avatar:any) => {
+        return instance.put(`auth/me` , {name:name, avatar:avatar})
     }
 }

@@ -1,35 +1,32 @@
 import style from './Profile.module.css'
 import {Paper} from "@mui/material";
 import LogoutIcon from '@mui/icons-material/Logout';
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../../app/store";
+import {AppDispatch, AppRootStateType} from "../../../app/store";
 import {useState} from "react";
-import {EditNameInput} from "./EditNameInput";
-import {SetNameTC} from "./profile-reducer";
-import { ThunkDispatch } from 'redux-thunk';
-import {AnyAction} from "redux";
+import {SetNameTC, SetPhotoTC, UserDataType} from "./profile-reducer";
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-
-export type DispatchType= ThunkDispatch<AppRootStateType, unknown, AnyAction>
-
+import {logoutTC} from "../login/login-reducer";
+import {Avatar} from "./Avatar";
+import {EditableSpan} from "./EditableSpan";
 
 export const Profile = () => {
-    const userName= useSelector<AppRootStateType,string>(state => state.profile.name)
-    const avatar= useSelector<AppRootStateType,string|undefined>(state => state.profile.avatar)
-const [editMode,setEditMode]=useState<boolean>(false)
-    const [name,setNewName]=useState<string>(userName)
+    const profile = useSelector<AppRootStateType, UserDataType>(state => state.profile.UserData)
+    const [editMode, setEditMode] = useState<boolean>(false)
+    const [name, setNewName] = useState<string>(profile.name)
 
-    const dispatch=useDispatch<DispatchType>()
+    const dispatch: AppDispatch = useDispatch();
 
-    const onEditIconHandler=()=>{
+    const onEditIconHandler = () => {
         setEditMode(true)
     }
-    const onSaveNameHandler=()=>{
+    const onSaveNameHandler = () => {
         setEditMode(false)
         dispatch(SetNameTC(name))
     }
+const setNewPhoto=(avatar:any)=>{
+        dispatch(SetPhotoTC(avatar))
+}
 
     return (
         <div className={style.mainBlock}>
@@ -38,19 +35,14 @@ const [editMode,setEditMode]=useState<boolean>(false)
             </div>
             <Paper elevation={1} className={style.paper}>
                 <span className={style.personalInfSpan}>Personal Information</span>
-                <div className={style.imgBlock}>
-                    <img    //checking for an avatar
-                        src={avatar?avatar
-                            :'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVe0cFaZ9e5Hm9X-tdWRLSvoZqg2bjemBABA&usqp=CAU'}/>
-                    <div><CameraAltIcon fontSize={'small'}/></div>
-                </div>
+                <Avatar avatar={profile.avatar} setNewPhoto={setNewPhoto}/>
                 <div className={style.nameBlock}>
-                    {editMode? <EditNameInput onClick={onSaveNameHandler} onChange={setNewName}/> //input and button component
-                        : <span>{userName} <BorderColorIcon onClick={onEditIconHandler}
-                            fontSize={'small'} style={{paddingTop:'5px'}}/></span>}
-                    <span className={style.email}>email</span>
+                    <EditableSpan editMode={editMode} name={name} onEditIconHandler={onEditIconHandler}
+                                  onSaveNameHandler={onSaveNameHandler}
+                                  setNewName={setNewName}/>
+                    <span className={style.email}>{profile.email}</span>
                 </div>
-                <button className={style.button}>
+                <button className={style.button} onClick={() => dispatch(logoutTC())}>
                     <LogoutIcon fontSize={'small'} style={{paddingRight: '5px'}}/> Log out
                 </button>
             </Paper>
