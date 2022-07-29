@@ -1,8 +1,111 @@
 .mainBlock {
     display: flex;
+    flex-direction: column;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
     justify-content: center;
+    align-items: center;
     margin-top: 10px;
     font-size: x-large;
     font-weight: bold;
     letter-spacing: 2px;
+    color: black;
+}
+
+.paper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 360px;
+    width: 413px ;
+    border: 1px solid rgba(208, 208, 208, 0.4);
+    font-size: 22px;
+    font-weight: 600;
+}
+.personalInfSpan {
+    color: black;
+    padding-top: 27px;
+    max-width: 250px;
+}
+
+.back{
+    align-self: flex-start;
+    color: black;
+    height: 60px;
+}
+.back span {
+    font-weight:600 ;
+    font-size: 22px;
+    line-height: 26.82px ;
+}
+.imgBlock{
+    display: flex;
+    width: 96px;
+    height: 96px;
+    left: 593px;
+    margin-top: 25px;
+    top: 204px;
+    box-sizing: border-box;
+overflow: hidden;
+    justify-content: flex-end;
+
+}
+.imgBlock img{
+    height: 96px;
+    width: 96px;
+    position: absolute;
+
+}
+.imgBlock div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    width: 26px;
+   z-index: 10;
+    position: absolute;
+    background-color: #c9c8c8;
+    border-radius: 5rem;
+    align-self: flex-end;
+}
+.nameBlock{
+    display: flex;
+    flex-direction: column;
+max-width: 250px;
+    padding-top: 15px;
+}
+.nameBlock span {
+    color:black;
+}
+.email{
+    font-weight:400 ;
+    font-size: 14px;
+   line-height:24px;
+    opacity: 0.5;
+    margin-top: 12px;
+}
+.buttonBlock{
+    height: 13px;
+}
+.button{
+    margin-top: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5rem;
+    color: black;
+    background: none;
+    height: 36px;
+    width: 127px;
+    font-size: 16px;
+    font-weight: 300;
+    border: 1px solid black;
+    box-shadow: 2px 2px rgba(0,0,0,0.3);
+}
+.button:hover,
+.button:active{
+    transition: 1s;
+    background-color: rgba(197, 196, 196, 0.3);
+
 }
