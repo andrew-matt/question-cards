@@ -49,3 +49,20 @@ export const loginTC = (data: LoginParamsType):AppThunk => (dispatch) => {
         })
 }
 
+export const logoutTC = ():AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
+    loginAPI.logout()
+        .then((res) => {
+            dispatch(setIsLoggedInAC(false))
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+        })
+        .finally(() => {
+            dispatch(setAppRequestStatusAC('idle'))
+        })
+}
+

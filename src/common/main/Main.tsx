@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Routes, Navigate, useParams} from 'react-router-dom';
+import {Navigate, Route, Routes} from 'react-router-dom';
 import {Login} from '../../features/auth/login/Login';
 import {Registration} from '../../features/auth/registration/Registration';
 import {Profile} from '../../features/auth/profile/Profile';
@@ -7,7 +7,6 @@ import {Error404} from '../../features/auth/error404/Error404';
 import {PasswordForgot} from '../../features/auth/passwordForgot/PasswordForgot';
 import {PasswordNew} from '../../features/auth/passwordNew/PasswordNew';
 import {Test} from '../../features/auth/test/Test';
-
 
 
 export const PATH = {
