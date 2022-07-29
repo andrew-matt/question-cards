@@ -9,7 +9,7 @@ const initialState: InitialStateType = {
     isInitialized: false
 };
 
-export const appReducer = (state: InitialStateType = initialState, action: AppActionsType): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: ActionsAppReducerType): InitialStateType => {
     switch (action.type) {
         case 'APP/SET-ERROR':
             return {...state, error: action.error};
