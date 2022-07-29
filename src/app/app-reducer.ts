@@ -52,11 +52,7 @@ export const initializedAppTC = ():AppThunk => (dispatch) => {
             dispatch(setIsLoggedInAC(true))
         })
         .catch((err: AxiosError<{ error: string }>) => {
-            const error = err.response
-                ? err.response.data.error
-                : err.message
             dispatch(setIsLoggedInAC(false))
-            dispatch(setAppErrorAC(error))
         })
         .finally(() => {
             dispatch(setAppIsInitializedAC(true))

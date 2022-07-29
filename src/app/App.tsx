@@ -14,6 +14,7 @@ function App() {
     useEffect(() => {
         dispatch(initializedAppTC())
     }, [])
+
     const dispatch: AppDispatch = useDispatch()
     const status = useSelector<AppRootStateType>((state) => state.app.status)
     const isInitialized = useSelector<AppRootStateType>((state) => state.app.isInitialized)
