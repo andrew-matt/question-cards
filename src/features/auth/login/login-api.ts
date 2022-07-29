@@ -9,6 +9,9 @@ export const loginAPI = {
     login(data:LoginParamsType) {
         return instance.post<ResponseLoginType>('auth/login', data)
     },
+    logout() {
+        return instance.delete('auth/me')
+    },
     //"forgot password" uses another url, thus such a strange request
     forgotPassword(email:string) {
         return axios.post<ResponseForgotPasswordType>(

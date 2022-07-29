@@ -3,7 +3,7 @@ import {Button, FormGroup, TextField} from '@mui/material';
 import {useFormik} from 'formik';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, AppRootStateType} from '../../../app/store';
-import {Navigate, NavLink} from 'react-router-dom';
+import {Navigate, NavLink, useNavigate} from 'react-router-dom';
 import {register} from './registration-reducer';
 import {PATH} from '../../../common/main/Main';
 import React from 'react';
@@ -106,7 +106,7 @@ export const Registration = () => {
                         >
                             Sign Up
                         </Button>
-                        <span className={style.subtitle}>Don't have an account?</span>
+                        <span className={style.subtitle}>Already have an account?</span>
                         <NavLink to={PATH.LOGIN} className={style.link}>Sign in</NavLink>
                     </FormGroup>
                 </form>
