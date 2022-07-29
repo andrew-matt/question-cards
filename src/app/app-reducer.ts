@@ -17,7 +17,7 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
         case "APP/SET-STATUS":
             return {...state, status: action.status}
         case "APP/SET-IS-INITIALIZED":
-            return {...state, isInitialized:action.value}
+            return {...state, isInitialized: action.value}
         default:
             return {...state};
     }
@@ -47,10 +47,10 @@ type setAppIsInitializedACType = ReturnType<typeof setAppIsInitializedAC>
 
 //THUNKS
 
-export const initializedAppTC = ():AppThunk => (dispatch) => {
+export const initializedAppTC = (): AppThunk => (dispatch) => {
     authAPI.me()
         .then((res) => {
-dispatch(SetProfileAC(res.data))
+            dispatch(SetProfileAC(res.data))
             dispatch(setIsLoggedInAC(true))
         })
         .catch((err: AxiosError<{ error: string }>) => {
