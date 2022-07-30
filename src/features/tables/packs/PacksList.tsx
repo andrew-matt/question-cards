@@ -10,18 +10,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, AppRootStateType} from '../../../app/store';
 import {ResponseCardPackType} from './packs-api';
 import {useEffect} from 'react';
-import {clearPacksList, getPacks} from './packs-reducer';
+import {clearPacksList, fetchPacks} from './packs-reducer';
+import {IconButton} from '@mui/material';
+import {Delete} from '@mui/icons-material';
 
 export const PacksList = () => {
 
     const packs = useSelector<AppRootStateType, ResponseCardPackType[]>(state => state.packs);
+    const userID = useSelector<AppRootStateType>(state => state.profile.UserData._id);
     const dispatch: AppDispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getPacks());
+        dispatch(fetchPacks());
         return () => {
-            dispatch(clearPacksList())
-        }
+            dispatch(clearPacksList());
+        };
     }, [dispatch]);
 
     return (
@@ -39,8 +42,8 @@ export const PacksList = () => {
                 <TableBody>
                     {packs.map((pack) => {
 
-                        const date = new Date(pack.updated)
-                        const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
+                        const date = new Date(pack.updated);
+                        const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
                         return (
                             <TableRow
@@ -51,7 +54,14 @@ export const PacksList = () => {
                                 <TableCell align="right">{pack.cardsCount}</TableCell>
                                 <TableCell align="right">{formattedDate}</TableCell>
                                 <TableCell align="right">{pack.user_name}</TableCell>
-                                <TableCell align="right">{1}</TableCell>
+                                <TableCell align="right">
+                                    {
+                                        userID === pack.user_id &&
+                                        <IconButton>
+                                            <Delete/>
+                                        </IconButton>
+                                    }
+                                </TableCell>
                             </TableRow>
                         );
                     })}

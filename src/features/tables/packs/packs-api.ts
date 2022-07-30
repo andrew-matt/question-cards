@@ -9,8 +9,12 @@ export const packsAPI = {
     getPacks() {
         return instance.get<GetPacksResponseType>('cards/pack');
     },
+    createPack() {
+        return instance.post('cards/pack', {cardsPack: {name: 'Pack 1', deckCover: 'some url', private: false}});
+    },
 };
 
+// types
 export type ResponseCardPackType = {
     _id: string
     user_id: string
