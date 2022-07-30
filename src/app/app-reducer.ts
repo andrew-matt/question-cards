@@ -1,8 +1,8 @@
-import {AppActionsType, AppThunk} from './store';
-import {authAPI} from "../features/auth/registration/auth-api";
-import {setIsLoggedInAC} from "../features/auth/login/login-reducer";
-import {AxiosError} from "axios";
-import {SetProfileAC} from "../features/auth/profile/profile-reducer";
+import {AppThunk} from './store';
+import {authAPI} from '../features/auth/registration/auth-api';
+import {setIsLoggedInAC} from '../features/auth/login/login-reducer';
+import {AxiosError} from 'axios';
+import {SetProfileAC} from '../features/auth/profile/profile-reducer';
 
 const initialState: InitialStateType = {
     error: null,
@@ -32,7 +32,7 @@ export type InitialStateType = {
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type ActionsAppReducerType = setAppErrorACType
-    | setAppRequestStatusAC
+    | setAppRequestStatusACType
     | setAppIsInitializedACType
 
 //ACTIONS
@@ -40,7 +40,7 @@ export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', 
 type setAppErrorACType = ReturnType<typeof setAppErrorAC>
 
 export const setAppRequestStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
-type setAppRequestStatusAC = ReturnType<typeof setAppRequestStatusAC>
+type setAppRequestStatusACType = ReturnType<typeof setAppRequestStatusAC>
 
 export const setAppIsInitializedAC = (value: boolean) => ({type: 'APP/SET-IS-INITIALIZED', value} as const)
 type setAppIsInitializedACType = ReturnType<typeof setAppIsInitializedAC>

@@ -7,6 +7,7 @@ import {Error404} from '../../features/auth/error404/Error404';
 import {PasswordForgot} from '../../features/auth/passwordForgot/PasswordForgot';
 import {PasswordNew} from '../../features/auth/passwordNew/PasswordNew';
 import {Test} from '../../features/auth/test/Test';
+import {Packs} from '../../features/tables/packs/Packs';
 
 
 export const PATH = {
@@ -17,6 +18,7 @@ export const PATH = {
     PASSWORD_RESET: '/password-reset',
     PASSWORD_NEW: '/password-new/:userToken',
     TEST: '/test',
+    PACKS: '/packs',
 };
 
 export const Main = () => {
@@ -33,6 +35,7 @@ export const Main = () => {
                 <Route path={PATH.PASSWORD_RESET} element={<PasswordForgot/>}/>
                 <Route path={PATH.PASSWORD_NEW} element={<PasswordNew/>}/>
                 <Route path={PATH.TEST} element={<Test/>}/>
+                <Route path={PATH.PACKS} element={<Packs/>}/>
             </Routes>
         </div>
     );

@@ -1,10 +1,6 @@
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {ActionsLoginType, loginReducer} from '../features/auth/login/login-reducer';
-import {
-    ActionsRegisterType,
-    registrationReducer,
-    setIsRegistered
-} from '../features/auth/registration/registration-reducer';
+import {ActionsRegisterType, registrationReducer} from '../features/auth/registration/registration-reducer';
 import {ActionsProfileType, profileReducer} from '../features/auth/profile/profile-reducer';
 import {errorReducer} from '../features/auth/error404/error-reducer';
 import {
@@ -13,8 +9,9 @@ import {
 } from '../features/auth/passwordForgot/password-forgot-reducer';
 import {ActionsPasswordNewType, passwordNewReducer} from '../features/auth/passwordNew/password-new-reducer';
 import {testReducer} from '../features/auth/test/test-reducer';
-import {ActionsAppReducerType, appReducer, setAppErrorAC} from './app-reducer';
-import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {ActionsAppReducerType, appReducer} from './app-reducer';
+import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {packsReducer, PacksReducerActionTypes} from '../features/tables/packs/packs-reducer';
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -25,6 +22,7 @@ const rootReducer = combineReducers({
     passwordForgot: passwordForgotReducer,
     passwordNew: passwordNewReducer,
     test: testReducer,
+    packs: packsReducer,
 });
 
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
@@ -37,6 +35,7 @@ export type AppActionsType = ActionsLoginType
     | ActionsRegisterType
     | ActionsAppReducerType
     | ActionsProfileType
+    | PacksReducerActionTypes
 
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsType>
