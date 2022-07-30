@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,10 +10,9 @@ import Paper from '@mui/material/Paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, AppRootStateType} from '../../../app/store';
 import {ResponseCardPackType} from './packs-api';
-import {useEffect} from 'react';
-import {clearPacksList, fetchPacks} from './packs-reducer';
+import {clearPacksList, fetchPacks, removePack} from './packs-reducer';
 import {IconButton} from '@mui/material';
-import {Delete} from '@mui/icons-material';
+import {Delete, School} from '@mui/icons-material';
 
 export const PacksList = () => {
 
@@ -32,11 +32,11 @@ export const PacksList = () => {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Name</TableCell>
-                        <TableCell align="right">Cards count</TableCell>
-                        <TableCell align="right">Update</TableCell>
-                        <TableCell align="right">Author name</TableCell>
-                        <TableCell align="right">Actions</TableCell>
+                        <TableCell style={{fontWeight: 'bold'}}>Name</TableCell>
+                        <TableCell align="center" style={{fontWeight: 'bold'}}>Cards count</TableCell>
+                        <TableCell align="center" style={{fontWeight: 'bold'}}>Update</TableCell>
+                        <TableCell align="center" style={{fontWeight: 'bold'}}>Author name</TableCell>
+                        <TableCell align="center" style={{fontWeight: 'bold'}}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -51,13 +51,16 @@ export const PacksList = () => {
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell component="th" scope="row">{pack.name}</TableCell>
-                                <TableCell align="right">{pack.cardsCount}</TableCell>
-                                <TableCell align="right">{formattedDate}</TableCell>
-                                <TableCell align="right">{pack.user_name}</TableCell>
-                                <TableCell align="right">
+                                <TableCell align="center">{pack.cardsCount}</TableCell>
+                                <TableCell align="center">{formattedDate}</TableCell>
+                                <TableCell align="center">{pack.user_name}</TableCell>
+                                <TableCell align="center">
+                                    <IconButton disabled={true}>
+                                        <School/>
+                                    </IconButton>
                                     {
                                         userID === pack.user_id &&
-                                        <IconButton>
+                                        <IconButton onClick={() => dispatch(removePack(pack._id))}>
                                             <Delete/>
                                         </IconButton>
                                     }

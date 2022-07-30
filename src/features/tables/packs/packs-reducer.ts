@@ -60,6 +60,24 @@ export const addPack = (): AppThunk => (dispatch) => {
         });
 };
 
+export const removePack = (packID: string): AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'));
+    packsAPI.deletePack(packID)
+        .then((res) => {
+            dispatch(clearPacksList());
+            dispatch(fetchPacks());
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message;
+            dispatch(setAppErrorAC(error));
+        })
+        .finally(() => {
+            dispatch(setAppRequestStatusAC('idle'));
+        });
+};
+
 // types
 type InitialStateType = typeof initialState
 

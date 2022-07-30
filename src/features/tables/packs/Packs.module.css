@@ -14,3 +14,7 @@
     font-size: 26px;
     font-weight: 600;
 }
+
+.tableHeader {
+    font-weight: bold;
+}

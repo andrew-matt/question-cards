@@ -12,6 +12,9 @@ export const packsAPI = {
     createPack() {
         return instance.post('cards/pack', {cardsPack: {name: 'Pack 1', deckCover: 'some url', private: false}});
     },
+    deletePack(packID: string) {
+        return instance.delete(`cards/pack?id=${packID}`);
+    },
 };
 
 // types
