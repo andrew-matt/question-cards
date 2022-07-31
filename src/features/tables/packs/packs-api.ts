@@ -15,6 +15,9 @@ export const packsAPI = {
     deletePack(packID: string) {
         return instance.delete(`cards/pack?id=${packID}`);
     },
+    updatePack(data: UpdatePackParamsType) {
+        return instance.put('cards/pack', {cardsPack: data});
+    },
 };
 
 // types
@@ -46,4 +49,9 @@ type GetPacksResponseType = {
     maxCardsCount: number
     token: string
     tokenDeathTime: number
+}
+
+export type UpdatePackParamsType = {
+    _id: string
+    name?: string
 }
