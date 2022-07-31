@@ -7,6 +7,7 @@ import {Error404} from '../../features/auth/error404/Error404';
 import {PasswordForgot} from '../../features/auth/passwordForgot/PasswordForgot';
 import {PasswordNew} from '../../features/auth/passwordNew/PasswordNew';
 import {Test} from '../../features/auth/test/Test';
+import { CardsTable } from '../../features/cards/cards-table-list/CardsTable';
 
 
 export const PATH = {
@@ -32,7 +33,7 @@ export const Main = () => {
                 <Route path={PATH.ERROR_404} element={<Error404/>}/>
                 <Route path={PATH.PASSWORD_RESET} element={<PasswordForgot/>}/>
                 <Route path={PATH.PASSWORD_NEW} element={<PasswordNew/>}/>
-                <Route path={PATH.TEST} element={<Test/>}/>
+                <Route path={PATH.TEST} element={<CardsTable/>}/>
             </Routes>
         </div>
     );
