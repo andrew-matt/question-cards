@@ -9,7 +9,14 @@ import {getCards} from "../cards-reducer";
 import {AppDispatch, AppRootStateType} from "../../../app/store";
 import {CardType} from "../cards-api";
 
-export const CardsTable = () => {
+type CardsTable = {
+    cardPackID?:string
+}
+
+export const CardsTable:React.FC<CardsTable> = (props) => {
+    const {
+        cardPackID
+    } = props
 
     useEffect(() => {
             dispatch(getCards('60d1ddb747b8860004376933'))
