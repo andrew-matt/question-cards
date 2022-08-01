@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCards} from "../cards-reducer";
 import {AppDispatch, AppRootStateType} from "../../../app/store";
 import {CardType} from "../cards-api";
+import {useParams} from "react-router-dom";
 
 type CardsTable = {
     cardPackID?:string
@@ -18,8 +19,10 @@ export const CardsTable:React.FC<CardsTable> = (props) => {
         cardPackID
     } = props
 
+    const {cardsPackID} = useParams()
+
     useEffect(() => {
-            dispatch(getCards('60d1ddb747b8860004376933'))
+            dispatch(getCards(cardsPackID || '60d1ddb747b8860004376933'))
     },[])
 
     const dispatch:AppDispatch = useDispatch()

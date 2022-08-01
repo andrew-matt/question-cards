@@ -12,6 +12,8 @@ import {ResponseCardPackType} from './packs-api';
 import {changePack, clearPacksList, fetchPacks, removePack} from './packs-reducer';
 import {IconButton, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
+import {CardsTable} from "../../cards/cards-table-list/CardsTable";
+import {NavLink} from "react-router-dom";
 
 export const PacksList = () => {
 
@@ -78,7 +80,9 @@ export const PacksList = () => {
                                                 onChange={onPackChangeHandler}
                                                 size={'small'}
                                             />
-                                            : pack.name
+                                           // :  pack.name
+                                        : <NavLink to={`/cards/${pack._id}`}>{pack.name}</NavLink>
+
                                     }
                                 </TableCell>
                                 <TableCell align="center">{pack.cardsCount}</TableCell>

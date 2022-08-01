@@ -15,8 +15,6 @@ import {testReducer} from '../features/auth/test/test-reducer';
 import {ActionsAppReducerType, appReducer} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {packsReducer, PacksReducerActionTypes} from '../features/tables/packs/packs-reducer';
-import {ActionsAppReducerType, appReducer, setAppErrorAC} from './app-reducer';
-import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {ActionsCardsReducer, cardsReducer} from "../features/cards/cards-reducer";
 
 const rootReducer = combineReducers({

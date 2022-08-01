@@ -20,6 +20,7 @@ export const PATH = {
     PASSWORD_NEW: '/password-new/:userToken',
     TEST: '/test',
     PACKS: '/packs',
+    CARDS: '/cards/:cardsPackID',
 };
 
 export const Main = () => {
@@ -35,7 +36,10 @@ export const Main = () => {
                 <Route path={PATH.ERROR_404} element={<Error404/>}/>
                 <Route path={PATH.PASSWORD_RESET} element={<PasswordForgot/>}/>
                 <Route path={PATH.PASSWORD_NEW} element={<PasswordNew/>}/>
-                <Route path={PATH.TEST} element={<CardsTable/>}/>
+                <Route path={PATH.TEST} element={<Test/>}/>
+                <Route path={PATH.PACKS} element={<Packs/>}/>
+                <Route path={PATH.CARDS} element={<CardsTable/>}/>
+
             </Routes>
         </div>
     );

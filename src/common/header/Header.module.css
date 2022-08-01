@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     transition: 1s;
-    transform: translate(-650px);
+    transform: translate(-700px);
 }
 
 .header:hover {
