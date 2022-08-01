@@ -6,49 +6,61 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, AppRootStateType} from '../../../app/store';
 import {ResponseCardPackType} from './packs-api';
 import {
     changePack,
     clearPacksList,
-    fetchUserPacks,
+    fetchPacks,
     removePack,
     RequestedPacksType,
+    setCurrentPage,
+    setPacksPerPage,
     setRequestedPacks,
 } from './packs-reducer';
 import {IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
+import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
 
 export const PacksList = () => {
 
     const [editMode, setEditMode] = useState(false);
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
-    const [packsPerPage, setPacksPerPage] = useState(5);
-    const [page, setPage] = useState(0);
 
-    const allPacks = useSelector<AppRootStateType, ResponseCardPackType[]>(state => state.packs.packsList);
-    const userID = useSelector<AppRootStateType, string>(state => state.profile.UserData._id);
-    const requestedPacks = useSelector<AppRootStateType, RequestedPacksType>(state => state.packs.requestedPacks);
-    const dispatch: AppDispatch = useDispatch();
+    const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
+    const packsAmount = useAppSelector<number>(state => state.packs.packsAmount);
+    const page = useAppSelector<number>(state => state.packs.currentPage);
+    const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
+    const user_id = useAppSelector<string>(state => state.profile.UserData._id);
+    const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchUserPacks(userID));
+        dispatch(fetchPacks({page, pageCount, user_id}));
         return () => {
             dispatch(setRequestedPacks(`User's`));
             dispatch(clearPacksList());
         };
-    }, [dispatch]);
-
-    const packs = allPacks.slice(page * packsPerPage, page * packsPerPage + packsPerPage);
+    }, [dispatch, page, pageCount, user_id]);
 
     const onPageChangeHandler = (event: unknown, newPage: number) => {
-        setPage(newPage);
+        const page = newPage + 1 // initially newPage value is equal to currentPage value
+        dispatch(setCurrentPage(page));
+        if (requestedPacks === `User's`) {
+            dispatch(fetchPacks({page, pageCount, user_id}));
+        } else {
+            dispatch(fetchPacks({page, pageCount}));
+        }
     };
 
-    const onRowsPerPageChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setPacksPerPage(+e.target.value);
+    const onPacksPerPageChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        const pageCount = +e.target.value;
+        dispatch(setPacksPerPage(pageCount));
+        if (requestedPacks === `User's`) {
+            dispatch(fetchPacks({page, pageCount, user_id}));
+        } else {
+            dispatch(fetchPacks({page, pageCount}));
+        }
     };
 
     const tableHeader = {fontWeight: 'bold', width: '20%'};
@@ -75,7 +87,7 @@ export const PacksList = () => {
                             setEditMode(false);
 
                             if (changedPackValue.trim() !== '' && changedPackValue.trim() !== pack.name) {
-                                dispatch(changePack({_id: pack._id, name: changedPackValue}, userID, requestedPacks));
+                                dispatch(changePack({_id: pack._id, name: changedPackValue}, requestedPacks, {page, pageCount, user_id}));
                             }
                         };
 
@@ -88,7 +100,7 @@ export const PacksList = () => {
                         };
 
                         const onDeleteButtonClickHandler = () => {
-                            dispatch(removePack(pack._id, userID, requestedPacks));
+                            dispatch(removePack(pack._id, requestedPacks, {page, pageCount, user_id}));
                         };
 
                         const onEditButtonClickHandler = () => {
@@ -115,7 +127,7 @@ export const PacksList = () => {
                         };
 
                         const showUserPackButtons = () => {
-                            if (userID === pack.user_id) {
+                            if (user_id === pack.user_id) {
                                 return (
                                     <>
                                         <IconButton onClick={onDeleteButtonClickHandler}>
@@ -151,11 +163,11 @@ export const PacksList = () => {
             <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
-                count={allPacks.length}
-                rowsPerPage={packsPerPage}
-                page={page}
+                count={packsAmount}
+                rowsPerPage={pageCount}
+                page={page - 1} // TablePagination component requires the first page to start with number 0
                 onPageChange={onPageChangeHandler}
-                onRowsPerPageChange={onRowsPerPageChangeHandler}
+                onRowsPerPageChange={onPacksPerPageChangeHandler}
             />
         </TableContainer>
     );

@@ -27,6 +27,7 @@ const rootReducer = combineReducers({
 
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
 
+//types
 export type AppRootStateType = ReturnType<typeof rootReducer>
 
 export type AppActionsType = ActionsLoginType
@@ -38,9 +39,9 @@ export type AppActionsType = ActionsLoginType
     | PacksReducerActionTypes
 
 
-export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsType>
-
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppRootStateType, unknown, AppActionsType>
+
+export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsType>
 
 // @ts-ignore
 window.store = store;

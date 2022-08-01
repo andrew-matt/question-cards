@@ -51,7 +51,8 @@ type GetPacksResponseType = {
     tokenDeathTime: number
 }
 
-type GetPacksParamsType = {
+export type GetPacksParamsType = {
+    page?: number
     pageCount?: number
     user_id?: string
 }

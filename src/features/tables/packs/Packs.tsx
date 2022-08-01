@@ -1,30 +1,34 @@
 import style from './Packs.module.css';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppDispatch, AppRootStateType} from '../../../app/store';
 import {Navigate} from 'react-router-dom';
 import {PacksList} from './PacksList';
 import {Button} from '@mui/material';
-import {addPack, fetchAllPacks, fetchUserPacks, RequestedPacksType, setRequestedPacks} from './packs-reducer';
+import {addPack, fetchPacks, RequestedPacksType, setCurrentPage, setRequestedPacks} from './packs-reducer';
+import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
 
 export const Packs = () => {
 
-    const dispatch: AppDispatch = useDispatch();
-    const userID = useSelector<AppRootStateType, string>(state => state.profile.UserData._id);
-    const requestedPacks = useSelector<AppRootStateType, RequestedPacksType>(state => state.packs.requestedPacks);
-    const isLoggedIn = useSelector<AppRootStateType>(state => state.login.isLoggedIn);
+    const dispatch = useAppDispatch();
+    const user_id = useAppSelector<string>(state => state.profile.UserData._id);
+    const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
+    const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
+    const isLoggedIn = useAppSelector<boolean>(state => state.login.isLoggedIn);
 
     const onUserPacksButtonClickHandler = () => {
-        dispatch(fetchUserPacks(userID));
+        const page = 1;
+        dispatch(setCurrentPage(page));
+        dispatch(fetchPacks({page, pageCount, user_id}));
         dispatch(setRequestedPacks(`User's`));
     };
 
     const onAllPacksButtonClickHandler = () => {
-        dispatch(fetchAllPacks());
+        const page = 1;
+        dispatch(setCurrentPage(page));
+        dispatch(fetchPacks({page, pageCount}));
         dispatch(setRequestedPacks('All'));
     };
 
     const onAddPackButtonClickHandler = () => {
-        dispatch(addPack(userID, requestedPacks));
+        dispatch(addPack(requestedPacks, pageCount, user_id));
     };
 
     if (!isLoggedIn) {
