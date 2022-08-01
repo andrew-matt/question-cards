@@ -1,4 +1,4 @@
-import {cardsAPI, CardType, RequestCreateCardType} from "./cards-api";
+import {cardsAPI, CardType, RequestCreateCardType, RequestUpdateCardType, ResponseGetCardType} from "./cards-api";
 import {AppThunk} from "../../app/store";
 import {AxiosError} from "axios";
 import {setAppErrorAC, setAppRequestStatusAC} from "../../app/app-reducer";
@@ -6,7 +6,15 @@ import {setAppErrorAC, setAppRequestStatusAC} from "../../app/app-reducer";
 const GET_CARDS = "CARDS-REDUCER/GET-CARDS"
 
 const initialState = {
-    cards: [] as CardType[]
+    "cards": [] as CardType[],
+    "packUserId": "",
+    "page": 0,
+    "pageCount": 0,
+    "cardsTotalCount": 0,
+    "minGrade": 0,
+    "maxGrade": 0,
+    "token": "",
+    "tokenDeathTime": 0,
 }
 
 type InitialStateType = typeof initialState
@@ -14,7 +22,7 @@ type InitialStateType = typeof initialState
 export const cardsReducer = (state:InitialStateType = initialState, action:ActionsCardsReducer):InitialStateType => {
     switch (action.type) {
         case GET_CARDS:
-            return {...state, cards: action.cards}
+            return {...state, ...action.data}
         default:
             return state
     }
@@ -22,7 +30,7 @@ export const cardsReducer = (state:InitialStateType = initialState, action:Actio
 
 export type ActionsCardsReducer = setCardsACType
 //ACTIONS
-export const setCardsAC = (cards:CardType[]) => ({type:GET_CARDS,cards} as const)
+export const setCardsAC = (data:ResponseGetCardType) => ({type:GET_CARDS,data} as const)
 export type setCardsACType = ReturnType<typeof setCardsAC>
 
 //THUNKS
@@ -31,7 +39,7 @@ export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.getCards(idCardsPack)
         .then((res) => {
-            dispatch(setCardsAC(res.data.cards))
+            dispatch(setCardsAC(res.data))
         })
         .catch((err: AxiosError<{ error: string }>) => {
             const error = err.response
@@ -44,7 +52,7 @@ export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
         })
 }
 
-export const addCards = (data:RequestCreateCardType) :AppThunk => (dispatch) => {
+export const addCard = (data:RequestCreateCardType) :AppThunk => (dispatch) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.createCard(data)
         .then((res) => {
@@ -61,4 +69,46 @@ export const addCards = (data:RequestCreateCardType) :AppThunk => (dispatch) => 
             dispatch(setAppRequestStatusAC('failed'))
         })
 
+}
+
+export const deleteCard = (cardID:string, cardsPackID:string) :AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
+    cardsAPI.deleteCard(cardID)
+        .then((res) => {
+            return res
+        })
+        .then((res) => {
+            dispatch(getCards(cardsPackID))
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+            dispatch(setAppRequestStatusAC('failed'))
+        })
+}
+
+export const updateCard = (cardID:string, cardsPackID:string) :AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
+    cardsAPI.updateCard({
+        card:{
+            _id:cardID,
+            question:"new question",
+            answer:"new answer"
+        }
+    })
+        .then((res) => {
+            return res
+        })
+        .then((res) => {
+            dispatch(getCards(cardsPackID))
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+            dispatch(setAppRequestStatusAC('failed'))
+        })
 }

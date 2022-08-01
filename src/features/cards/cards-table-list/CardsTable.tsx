@@ -8,8 +8,6 @@ import { useSelector} from "react-redux";
 import { AppRootStateType} from "../../../app/store";
 import {CardType} from "../cards-api";
 
-
-
 const CardsTable:React.FC = () => {
 
     const columns = [

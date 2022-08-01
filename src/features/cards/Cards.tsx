@@ -1,18 +1,19 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import style from './Cards.module.css'
 
 import CardsTable from "./cards-table-list/CardsTable";
 import Button from '@mui/material/Button/Button';
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {addCards, getCards} from "./cards-reducer";
+import {addCard, getCards} from "./cards-reducer";
 import {AppDispatch, AppRootStateType} from "../../app/store";
 
 
 export const Cards: React.FC = () => {
     const {cardsPackID} = useParams()
     const dispatch:AppDispatch = useDispatch()
-    const currentCardsPackIsMyOrAll = useSelector<AppRootStateType>(state => state.packs.requestedPacks)
+    const userID = useSelector<AppRootStateType, string>(state => state.profile.UserData._id);
+    const cardsUserID = useSelector<AppRootStateType>(state => state.cards.packUserId)
 
     useEffect(() => {
         if (cardsPackID) dispatch(getCards(cardsPackID))
@@ -20,7 +21,7 @@ export const Cards: React.FC = () => {
 
     const addCardHandler = () => {
         if (cardsPackID) {
-            dispatch(addCards({
+            dispatch(addCard({
                 card: {
                     cardsPack_id: cardsPackID
                 }
@@ -32,7 +33,12 @@ export const Cards: React.FC = () => {
         <div className={style.cards}>
             <div className={style.cards__wrapper}>
                 <h2 className={style.cards__title}>Cards</h2>
-                {currentCardsPackIsMyOrAll === "User's" && <Button variant="contained" onClick={addCardHandler}>Add task</Button>}
+                <Button
+                    variant="contained"
+                    onClick={addCardHandler}
+                    disabled={userID !== cardsUserID}
+                >Add task
+                </Button>
             </div>
             <CardsTable/>
         </div>

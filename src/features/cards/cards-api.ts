@@ -2,19 +2,29 @@ import axios from "axios";
 
 const instance = axios.create({
     baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials:true
+    withCredentials: true
 })
 
 export const cardsAPI = {
-    getCards(idCardPack:string) {
-        return instance.get<ResponseGetCardType>('/cards/card',{
+    getCards(idCardPack: string) {
+        return instance.get<ResponseGetCardType>('/cards/card', {
             params: {
-                cardsPack_id:idCardPack
+                cardsPack_id: idCardPack
             }
         })
     },
-    createCard(data:RequestCreateCardType) {
-        return instance.post('/cards/card',data)
+    createCard(data: RequestCreateCardType) {
+        return instance.post('/cards/card', data)
+    },
+    deleteCard(cardID: string) {
+        return instance.delete('/cards/card', {
+            params: {
+                id: cardID
+            }
+        })
+    },
+    updateCard(data: RequestUpdateCardType) {
+        return instance.put('/cards/card', data)
     }
 }
 
@@ -35,8 +45,8 @@ export type CardType = {
     "__v": number
 }
 
-type ResponseGetCardType = {
-    "cards":CardType[],
+export type ResponseGetCardType = {
+    "cards": CardType[],
     "packUserId": string
     "page": number
     "pageCount": number
@@ -58,5 +68,13 @@ export type RequestCreateCardType = {
         questionImg?: string
         questionVideo?: string
         answerVideo?: string
+    }
+}
+
+export type RequestUpdateCardType = {
+    card: {
+        _id: string
+        question?: string
+        answer?:string
     }
 }
