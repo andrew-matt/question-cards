@@ -19,7 +19,7 @@ import {
 } from './packs-reducer';
 import {IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
-import {CardsTable} from "../../cards/cards-table-list/CardsTable";
+import {Cards} from "../../cards/Cards";
 import {NavLink} from "react-router-dom";
 
 export const PacksList = () => {
@@ -109,10 +109,11 @@ export const PacksList = () => {
                                         onKeyUp={onKeyUpHandler}
                                         onChange={onPackChangeHandler}
                                         size={'small'}
+                                        onClick={()=>alert('x')}
                                     />
                                 );
                             } else {
-                                return pack.name;
+                                return <NavLink to={`/cards/${pack._id}`}>{pack.name}</NavLink>
                             }
                         };
 

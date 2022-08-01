@@ -1,4 +1,4 @@
-import {cardsAPI, CardType} from "./cards-api";
+import {cardsAPI, CardType, RequestCreateCardType} from "./cards-api";
 import {AppThunk} from "../../app/store";
 import {AxiosError} from "axios";
 import {setAppErrorAC, setAppRequestStatusAC} from "../../app/app-reducer";
@@ -42,4 +42,23 @@ export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
         .finally(() => {
             dispatch(setAppRequestStatusAC('idle'))
         })
+}
+
+export const addCards = (data:RequestCreateCardType) :AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
+    cardsAPI.createCard(data)
+        .then((res) => {
+            return res
+        })
+        .then((res) => {
+            dispatch(getCards(data.card.cardsPack_id))
+        })
+        .catch((err: AxiosError<{ error: string }>) => {
+            const error = err.response
+                ? err.response.data.error
+                : err.message
+            dispatch(setAppErrorAC(error))
+            dispatch(setAppRequestStatusAC('failed'))
+        })
+
 }

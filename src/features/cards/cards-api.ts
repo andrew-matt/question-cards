@@ -12,6 +12,9 @@ export const cardsAPI = {
                 cardsPack_id:idCardPack
             }
         })
+    },
+    createCard(data:RequestCreateCardType) {
+        return instance.post('/cards/card',data)
     }
 }
 
@@ -42,4 +45,18 @@ type ResponseGetCardType = {
     "maxGrade": number
     "token": string
     "tokenDeathTime": number
+}
+
+export type RequestCreateCardType = {
+    card: {
+        cardsPack_id: string
+        question?: string
+        answer?: string
+        grade?: number
+        shots?: number
+        answerImg?: string
+        questionImg?: string
+        questionVideo?: string
+        answerVideo?: string
+    }
 }
