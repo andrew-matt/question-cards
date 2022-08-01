@@ -6,11 +6,11 @@ const instance = axios.create({
 });
 
 export const packsAPI = {
-    getPacks() {
-        return instance.get<GetPacksResponseType>('cards/pack');
+    getPacks(data: GetPacksParamsType = {}) {
+        return instance.get<GetPacksResponseType>('cards/pack', {params: data});
     },
     createPack() {
-        return instance.post('cards/pack', {cardsPack: {name: 'Pack 1', deckCover: 'some url', private: false}});
+        return instance.post('cards/pack', {cardsPack: {name: 'pack', deckCover: 'some url', private: false}});
     },
     deletePack(packID: string) {
         return instance.delete(`cards/pack?id=${packID}`);
@@ -51,7 +51,13 @@ type GetPacksResponseType = {
     tokenDeathTime: number
 }
 
+type GetPacksParamsType = {
+    pageCount?: number
+    user_id?: string
+}
+
 export type UpdatePackParamsType = {
     _id: string
     name?: string
 }
+

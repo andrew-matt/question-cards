@@ -9,8 +9,15 @@ import Paper from '@mui/material/Paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppDispatch, AppRootStateType} from '../../../app/store';
 import {ResponseCardPackType} from './packs-api';
-import {changePack, clearPacksList, fetchPacks, removePack} from './packs-reducer';
-import {IconButton, TextField} from '@mui/material';
+import {
+    changePack,
+    clearPacksList,
+    fetchUserPacks,
+    removePack,
+    RequestedPacksType,
+    setRequestedPacks,
+} from './packs-reducer';
+import {IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
 import {CardsTable} from "../../cards/cards-table-list/CardsTable";
 import {NavLink} from "react-router-dom";
@@ -20,28 +27,45 @@ export const PacksList = () => {
     const [editMode, setEditMode] = useState(false);
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
+    const [packsPerPage, setPacksPerPage] = useState(5);
+    const [page, setPage] = useState(0);
 
-    const packs = useSelector<AppRootStateType, ResponseCardPackType[]>(state => state.packs);
-    const userID = useSelector<AppRootStateType>(state => state.profile.UserData._id);
+    const allPacks = useSelector<AppRootStateType, ResponseCardPackType[]>(state => state.packs.packsList);
+    const userID = useSelector<AppRootStateType, string>(state => state.profile.UserData._id);
+    const requestedPacks = useSelector<AppRootStateType, RequestedPacksType>(state => state.packs.requestedPacks);
     const dispatch: AppDispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchPacks());
+        dispatch(fetchUserPacks(userID));
         return () => {
+            dispatch(setRequestedPacks(`User's`));
             dispatch(clearPacksList());
         };
     }, [dispatch]);
+
+    const packs = allPacks.slice(page * packsPerPage, page * packsPerPage + packsPerPage);
+
+    const onPageChangeHandler = (event: unknown, newPage: number) => {
+        setPage(newPage);
+    };
+
+    const onRowsPerPageChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setPacksPerPage(+e.target.value);
+    };
+
+    const tableHeader = {fontWeight: 'bold', width: '20%'};
+    const align = 'center';
 
     return (
         <TableContainer component={Paper}>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{fontWeight: 'bold'}}>Name</TableCell>
-                        <TableCell align="center" style={{fontWeight: 'bold'}}>Cards count</TableCell>
-                        <TableCell align="center" style={{fontWeight: 'bold'}}>Update</TableCell>
-                        <TableCell align="center" style={{fontWeight: 'bold'}}>Author name</TableCell>
-                        <TableCell align="center" style={{fontWeight: 'bold'}}>Actions</TableCell>
+                        <TableCell style={tableHeader}>Name</TableCell>
+                        <TableCell align={align} style={tableHeader}>Cards count</TableCell>
+                        <TableCell align={align} style={tableHeader}>Update</TableCell>
+                        <TableCell align={align} style={tableHeader}>Author name</TableCell>
+                        <TableCell align={align} style={tableHeader}>Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -52,66 +76,89 @@ export const PacksList = () => {
                         const packChange = () => {
                             setEditMode(false);
 
-                            if (changedPackValue.trim() !== '') {
-                                dispatch(changePack({_id: pack._id, name: changedPackValue}));
+                            if (changedPackValue.trim() !== '' && changedPackValue.trim() !== pack.name) {
+                                dispatch(changePack({_id: pack._id, name: changedPackValue}, userID, requestedPacks));
                             }
                         };
 
                         const onPackChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                            setChangedPackValue(e.currentTarget.value)
+                            setChangedPackValue(e.currentTarget.value);
                         };
 
                         const onKeyUpHandler = (e: KeyboardEvent<HTMLInputElement>) => {
                             if (e.key === 'Enter') packChange();
                         };
 
-                        return (
-                            <TableRow
-                                key={pack._id}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {
-                                        editMode && changedPackID === pack._id
-                                            ? <TextField
-                                                autoFocus
-                                                onBlur={packChange}
-                                                onKeyUp={onKeyUpHandler}
-                                                onChange={onPackChangeHandler}
-                                                size={'small'}
-                                            />
-                                           // :  pack.name
-                                        : <NavLink to={`/cards/${pack._id}`}>{pack.name}</NavLink>
+                        const onDeleteButtonClickHandler = () => {
+                            dispatch(removePack(pack._id, userID, requestedPacks));
+                        };
 
-                                    }
+                        const onEditButtonClickHandler = () => {
+                            setEditMode(true);
+                            setChangedPackValue(pack.name);
+                            setChangedPackID(pack._id);
+                        };
+
+                        const activateEditMode = () => {
+                            if (editMode && changedPackID === pack._id) {
+                                return (
+                                    <TextField
+                                        value={changedPackValue}
+                                        autoFocus
+                                        onBlur={packChange}
+                                        onKeyUp={onKeyUpHandler}
+                                        onChange={onPackChangeHandler}
+                                        size={'small'}
+                                    />
+                                );
+                            } else {
+                                return pack.name;
+                            }
+                        };
+
+                        const showUserPackButtons = () => {
+                            if (userID === pack.user_id) {
+                                return (
+                                    <>
+                                        <IconButton onClick={onDeleteButtonClickHandler}>
+                                            <Delete/>
+                                        </IconButton>
+                                        <IconButton onClick={onEditButtonClickHandler}>
+                                            <Edit/>
+                                        </IconButton>
+                                    </>
+                                );
+                            }
+                        };
+
+                        return (
+                            <TableRow key={pack._id}>
+                                <TableCell component="th" scope="row">
+                                    {activateEditMode()}
                                 </TableCell>
-                                <TableCell align="center">{pack.cardsCount}</TableCell>
-                                <TableCell align="center">{formattedDate}</TableCell>
-                                <TableCell align="center">{pack.user_name}</TableCell>
-                                <TableCell align="center">
+                                <TableCell align={align}>{pack.cardsCount}</TableCell>
+                                <TableCell align={align}>{formattedDate}</TableCell>
+                                <TableCell align={align}>{pack.user_name}</TableCell>
+                                <TableCell align={align}>
                                     <IconButton disabled={true}>
                                         <School/>
                                     </IconButton>
-                                    {
-                                        userID === pack.user_id &&
-                                        <>
-                                            <IconButton onClick={() => dispatch(removePack(pack._id))}>
-                                                <Delete/>
-                                            </IconButton>
-                                            <IconButton>
-                                                <Edit onClick={() => {
-                                                    setEditMode(true);
-                                                    setChangedPackID(pack._id);
-                                                }}/>
-                                            </IconButton>
-                                        </>
-                                    }
+                                    {showUserPackButtons()}
                                 </TableCell>
                             </TableRow>
                         );
                     })}
                 </TableBody>
             </Table>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={allPacks.length}
+                rowsPerPage={packsPerPage}
+                page={page}
+                onPageChange={onPageChangeHandler}
+                onRowsPerPageChange={onRowsPerPageChangeHandler}
+            />
         </TableContainer>
     );
 };
