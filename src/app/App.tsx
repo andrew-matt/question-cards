@@ -30,7 +30,6 @@ function App() {
         </div>;
 
     }
-
     return (
         <div className="App">
             <AppBar position="static" color={'default'}>

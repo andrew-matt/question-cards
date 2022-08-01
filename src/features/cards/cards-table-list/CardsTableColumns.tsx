@@ -22,7 +22,11 @@ export const CardsTableColumns:React.FC<CardsTableColumnPropsType> = (props) => 
             <TableRow>
                 {
                     columns.map((col) => {
-                        return <TableCell width={col.width}>{col.headerName}</TableCell>
+                        return <TableCell
+                            key={col.headerName + Math.random()}
+                            width={col.width}
+                        >{col.headerName}
+                        </TableCell>
                     })
                 }
             </TableRow>

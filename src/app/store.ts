@@ -15,6 +15,7 @@ import {ActionsPasswordNewType, passwordNewReducer} from '../features/auth/passw
 import {testReducer} from '../features/auth/test/test-reducer';
 import {ActionsAppReducerType, appReducer, setAppErrorAC} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk'
+import {ActionsCardsReducer, cardsReducer} from "../features/cards/cards-reducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     passwordForgot: passwordForgotReducer,
     passwordNew: passwordNewReducer,
     test: testReducer,
+    cards: cardsReducer
 });
 
 const store = legacy_createStore(rootReducer, applyMiddleware(thunk));
@@ -37,6 +39,7 @@ export type AppActionsType = ActionsLoginType
     | ActionsRegisterType
     | ActionsAppReducerType
     | ActionsProfileType
+    | ActionsCardsReducer
 
 
 export type AppDispatch = ThunkDispatch<AppRootStateType, unknown, AppActionsType>

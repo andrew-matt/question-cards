@@ -5,7 +5,7 @@ const instance = axios.create({
     withCredentials:true
 })
 
-const cardsApi = {
+export const cardsAPI = {
     getCards(idCardPack:string) {
         return instance.get<ResponseGetCardType>('/cards/card',{
             params: {
@@ -15,7 +15,7 @@ const cardsApi = {
     }
 }
 
-type CardType = {
+export type CardType = {
     "_id": string
     "cardsPack_id": string
     "user_id": string
