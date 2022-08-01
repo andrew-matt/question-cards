@@ -39,9 +39,10 @@ export const PacksList = () => {
         dispatch(fetchPacks({page, pageCount, user_id}));
         return () => {
             dispatch(setRequestedPacks(`User's`));
+            dispatch(setCurrentPage(1));
             dispatch(clearPacksList());
         };
-    }, [dispatch, page, pageCount, user_id]);
+    }, []);
 
     const onPageChangeHandler = (event: unknown, newPage: number) => {
         const page = newPage + 1 // initially newPage value is equal to currentPage value
