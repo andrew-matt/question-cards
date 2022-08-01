@@ -8,19 +8,14 @@ import {useDispatch, useSelector} from "react-redux";
 import {getCards} from "../cards-reducer";
 import {AppDispatch, AppRootStateType} from "../../../app/store";
 import {CardType} from "../cards-api";
-import {initializedAppTC} from "../../../app/app-reducer";
-import {setIsLoggedInAC} from "../../auth/login/login-reducer";
-import {useNavigate} from "react-router-dom";
 
 export const CardsTable = () => {
-    const rows = useSelector<AppRootStateType, CardType[]>((state) => state.cards.cards)
+
     useEffect(() => {
             dispatch(getCards('60d1ddb747b8860004376933'))
     },[])
 
     const dispatch:AppDispatch = useDispatch()
-
-
 
     const columns = [
         {field: 'question', headerName: 'Question', width: 150},
@@ -28,6 +23,7 @@ export const CardsTable = () => {
         {field: 'lastUpdate', headerName: 'Last Updated', width: 30},
         {field: 'grade', headerName: 'Grade', width: 60},
     ]
+    const rows = useSelector<AppRootStateType, CardType[]>((state) => state.cards.cards)
 
     // const rows = [
     //     {

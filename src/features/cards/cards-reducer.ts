@@ -1,7 +1,7 @@
 import {cardsAPI, CardType} from "./cards-api";
 import {AppThunk} from "../../app/store";
 import {AxiosError} from "axios";
-import {setAppErrorAC} from "../../app/app-reducer";
+import {setAppErrorAC, setAppRequestStatusAC} from "../../app/app-reducer";
 
 const GET_CARDS = "CARDS-REDUCER/GET-CARDS"
 
@@ -28,6 +28,7 @@ export type setCardsACType = ReturnType<typeof setCardsAC>
 //THUNKS
 
 export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
+    dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.getCards(idCardsPack)
         .then((res) => {
             dispatch(setCardsAC(res.data.cards))
@@ -37,5 +38,8 @@ export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
                 ? err.response.data.error
                 : err.message
             dispatch(setAppErrorAC(error))
+        })
+        .finally(() => {
+            dispatch(setAppRequestStatusAC('idle'))
         })
 }
