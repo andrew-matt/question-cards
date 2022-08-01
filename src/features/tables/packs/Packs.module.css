@@ -1,0 +1,20 @@
+.container {
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.tableHeader {
+    font-weight: bold;
+}

@@ -16,6 +16,7 @@ export const Header = () => {
             <NavLink to={PATH.PASSWORD_RESET} className={style.link}>passwordReset</NavLink>
             <NavLink to={PATH.PASSWORD_NEW} className={style.link}>passwordNew</NavLink>
             <NavLink to={PATH.TEST} className={style.link}>test</NavLink>
+            <NavLink to={PATH.PACKS} className={style.link}>packs</NavLink>
             <div className={style.block}>{image}</div>
         </div>
     );
