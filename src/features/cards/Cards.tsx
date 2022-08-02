@@ -5,7 +5,7 @@ import CardsTable from "./cards-table-list/CardsTable";
 import Button from '@mui/material/Button/Button';
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {addCard, getCards} from "./cards-reducer";
+import {addCard, ClearCardsListAC, getCards} from "./cards-reducer";
 import {AppDispatch, AppRootStateType} from "../../app/store";
 
 
@@ -18,6 +18,9 @@ export const Cards: React.FC = () => {
 
     useEffect(() => {
         if (cardsPackID) dispatch(getCards(cardsPackID))
+        return () => {
+            dispatch(ClearCardsListAC())
+        }
     }, [])
 
     const addCardHandler = () => {

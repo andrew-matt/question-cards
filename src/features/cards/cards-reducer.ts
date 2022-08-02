@@ -4,6 +4,7 @@ import {AxiosError} from "axios";
 import {setAppErrorAC, setAppRequestStatusAC} from "../../app/app-reducer";
 
 const GET_CARDS = "CARDS-REDUCER/GET-CARDS"
+const CLEAR_CARDS_LIST = "CARDS-REDUCER/CLEAR_CARDS_LIST"
 
 const initialState = {
     "cards": [] as CardType[],
@@ -19,23 +20,29 @@ const initialState = {
 
 type InitialStateType = typeof initialState
 
-export const cardsReducer = (state:InitialStateType = initialState, action:ActionsCardsReducer):InitialStateType => {
+export const cardsReducer = (state: InitialStateType = initialState, action: ActionsCardsReducer): InitialStateType => {
     switch (action.type) {
         case GET_CARDS:
             return {...state, ...action.data}
+        case CLEAR_CARDS_LIST:
+            return {...state, cards: []}
         default:
             return state
     }
 }
 
 export type ActionsCardsReducer = setCardsACType
+    | ClearCardsListACType
 //ACTIONS
-export const setCardsAC = (data:ResponseGetCardType) => ({type:GET_CARDS,data} as const)
+export const setCardsAC = (data: ResponseGetCardType) => ({type: GET_CARDS, data} as const)
 export type setCardsACType = ReturnType<typeof setCardsAC>
+
+export const ClearCardsListAC = () => ({type: CLEAR_CARDS_LIST} as const)
+export type ClearCardsListACType = ReturnType<typeof ClearCardsListAC>
 
 //THUNKS
 
-export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
+export const getCards = (idCardsPack: string): AppThunk => (dispatch) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.getCards(idCardsPack)
         .then((res) => {
@@ -52,7 +59,7 @@ export const getCards = (idCardsPack:string):AppThunk => (dispatch) => {
         })
 }
 
-export const addCard = (data:RequestCreateCardType) :AppThunk => (dispatch) => {
+export const addCard = (data: RequestCreateCardType): AppThunk => (dispatch) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.createCard(data)
         .then((res) => {
@@ -71,7 +78,7 @@ export const addCard = (data:RequestCreateCardType) :AppThunk => (dispatch) => {
 
 }
 
-export const deleteCard = (cardID:string, cardsPackID:string) :AppThunk => (dispatch) => {
+export const deleteCard = (cardID: string, cardsPackID: string): AppThunk => (dispatch) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.deleteCard(cardID)
         .then((res) => {
@@ -89,13 +96,13 @@ export const deleteCard = (cardID:string, cardsPackID:string) :AppThunk => (disp
         })
 }
 
-export const updateCard = (cardID:string, cardsPackID:string) :AppThunk => (dispatch) => {
+export const updateCard = (cardID: string, cardsPackID: string): AppThunk => (dispatch) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.updateCard({
-        card:{
-            _id:cardID,
-            question:"new question",
-            answer:"new answer"
+        card: {
+            _id: cardID,
+            question: "new question",
+            answer: "new answer"
         }
     })
         .then((res) => {
