@@ -11,6 +11,7 @@ import {initializedAppTC} from './app-reducer';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import {AppBar, Button, Toolbar} from '@mui/material';
 import {logoutTC} from '../features/auth/login/login-reducer';
+import {fetchAllPacks} from "../features/tables/packs/packs-reducer";
 
 function App() {
     useEffect(() => {
@@ -30,7 +31,6 @@ function App() {
         </div>;
 
     }
-
     return (
         <div className="App">
             <AppBar position="static" color={'default'}>

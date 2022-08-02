@@ -13,6 +13,7 @@ import {
     fetchPacks,
     removePack,
     RequestedPacksType,
+    setCurrentPackName,
     setCurrentPage,
     setPacksPerPage,
     setRequestedPacks,
@@ -20,6 +21,8 @@ import {
 import {IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
 import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
+import {Cards} from "../../cards/Cards";
+import {NavLink} from "react-router-dom";
 
 export const PacksList = () => {
 
@@ -110,6 +113,10 @@ export const PacksList = () => {
                             setChangedPackID(pack._id);
                         };
 
+                        const setCurrentPackNameHandler = () => {
+                            dispatch(setCurrentPackName(pack.name))
+                        }
+
                         const activateEditMode = () => {
                             if (editMode && changedPackID === pack._id) {
                                 return (
@@ -123,7 +130,13 @@ export const PacksList = () => {
                                     />
                                 );
                             } else {
-                                return pack.name;
+                                return <NavLink
+                                    style={{textDecoration:"none"}}
+                                    to={`/cards/${pack._id}`}
+                                    onClick={setCurrentPackNameHandler}
+                                >
+                                    {pack.name}
+                                </NavLink>
                             }
                         };
 

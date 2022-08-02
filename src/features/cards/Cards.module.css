@@ -1,0 +1,14 @@
+.cards__wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.cards__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cards__title {
+    margin: 0 0 20px;
+}

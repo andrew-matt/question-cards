@@ -9,6 +9,7 @@ const initialState = {
     currentPage: 1,
     packsPerPage: 5,
     requestedPacks: `User's` as RequestedPacksType,
+    nameOfCurrentPack:""
 };
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksReducerActionTypes): InitialStateType => {
@@ -25,6 +26,8 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
             return {...state, currentPage: action.currentPage};
         case 'packs/SET-REQUESTED-PACKS':
             return {...state, requestedPacks: action.requestedPacks};
+        case "packs/SET-CURRENT-PACK-NAME":
+            return {...state, nameOfCurrentPack:action.name}
         default: {
             return state;
         }
@@ -41,6 +44,8 @@ export const setRequestedPacks = (requestedPacks: RequestedPacksType) => ({
     type: 'packs/SET-REQUESTED-PACKS',
     requestedPacks,
 } as const);
+export const setCurrentPackName = (name:string) => ({type: 'packs/SET-CURRENT-PACK-NAME',name} as const);
+
 
 //thunks
 export const fetchPacks = (data: GetPacksParamsType = {}): AppThunk => async (dispatch) => {
@@ -126,6 +131,7 @@ type setPacksAmountType = ReturnType<typeof setPacksAmount>
 type setPacksPerPageType = ReturnType<typeof setPacksPerPage>
 type setCurrentPageType = ReturnType<typeof setCurrentPage>
 type setRequestedPacksType = ReturnType<typeof setRequestedPacks>
+type  setCurrentNamePackType = ReturnType<typeof setCurrentPackName>
 
 export type PacksReducerActionTypes = setPacksListType
     | clearPacksListType
@@ -133,5 +139,6 @@ export type PacksReducerActionTypes = setPacksListType
     | setPacksPerPageType
     | setCurrentPageType
     | setRequestedPacksType
+| setCurrentNamePackType
 
 export type RequestedPacksType = `User's` | 'All'

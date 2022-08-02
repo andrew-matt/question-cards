@@ -1,6 +1,9 @@
 import {applyMiddleware, combineReducers, legacy_createStore} from 'redux';
 import {ActionsLoginType, loginReducer} from '../features/auth/login/login-reducer';
-import {ActionsRegisterType, registrationReducer} from '../features/auth/registration/registration-reducer';
+import {
+    ActionsRegisterType,
+    registrationReducer,
+} from '../features/auth/registration/registration-reducer';
 import {ActionsProfileType, profileReducer} from '../features/auth/profile/profile-reducer';
 import {errorReducer} from '../features/auth/error404/error-reducer';
 import {
@@ -12,6 +15,7 @@ import {testReducer} from '../features/auth/test/test-reducer';
 import {ActionsAppReducerType, appReducer} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
 import {packsReducer, PacksReducerActionTypes} from '../features/tables/packs/packs-reducer';
+import {ActionsCardsReducer, cardsReducer} from "../features/cards/cards-reducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
@@ -22,6 +26,7 @@ const rootReducer = combineReducers({
     passwordForgot: passwordForgotReducer,
     passwordNew: passwordNewReducer,
     test: testReducer,
+    cards: cardsReducer,
     packs: packsReducer,
 });
 
@@ -36,6 +41,7 @@ export type AppActionsType = ActionsLoginType
     | ActionsRegisterType
     | ActionsAppReducerType
     | ActionsProfileType
+    | ActionsCardsReducer
     | PacksReducerActionTypes
 
 
