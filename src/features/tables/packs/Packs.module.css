@@ -14,3 +14,24 @@
     font-size: 26px;
     font-weight: 600;
 }
+.search {
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.searchIcon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    order: -1;
+}
+.searchField {
+    width: 200px;
+    border: 0;
+    background: transparent;
+}
+.searchField:focus{
+    outline: none;
+}

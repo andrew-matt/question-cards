@@ -21,13 +21,18 @@ import {IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
 import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
 
-export const PacksList = () => {
+type PropsType={
+    searchedPackList:ResponseCardPackType[],
+    cardNumber:number[]
+}
+
+export const PacksList = (props:PropsType) => {
 
     const [editMode, setEditMode] = useState(false);
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
 
-    const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
+    //const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
     const packsAmount = useAppSelector<number>(state => state.packs.packsAmount);
     const page = useAppSelector<number>(state => state.packs.currentPage);
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
@@ -80,7 +85,7 @@ export const PacksList = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {packs.map((pack) => {
+                    {props.searchedPackList.map((pack) => {
                         const date = new Date(pack.updated);
                         const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
