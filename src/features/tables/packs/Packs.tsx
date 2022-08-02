@@ -11,6 +11,7 @@ import {useState} from "react";
 export const Packs = () => {
 
     const dispatch = useAppDispatch();
+    const page = useAppSelector<number>(state => state.packs.currentPage);
     const user_id = useAppSelector<string>(state => state.profile.UserData._id);
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
     const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
@@ -18,7 +19,9 @@ export const Packs = () => {
     const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
 
     const [inputValue, setInputValue] = useState<string>('')
-    const [value, setValue] = useState<number[]>([2, 10]);
+    const [value, setValue] = useState<number[]>([0, 100]);
+    const min = value[0]
+    const max= value[1]
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
@@ -49,6 +52,10 @@ export const Packs = () => {
         dispatch(addPack(requestedPacks, pageCount, user_id));
     };
 
+    const onSearchCardsNumber=()=>{
+        dispatch(fetchPacks({page, pageCount, user_id, min,max}))
+    }
+
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>;
     }
@@ -67,18 +74,19 @@ export const Packs = () => {
                         onClick={onUserPacksButtonClickHandler}>MY PACKS</Button>
                 <Button variant={requestedPacks === 'All' ? 'contained' : 'outlined'}
                         onClick={onAllPacksButtonClickHandler}>ALL PACKS</Button>
-                <div style={{width:'160px'}}>
-                    <span>{value[0]}</span>
+                <div style={{width:'170px', display:'flex'}}>
+                    <div style={{paddingRight:"15px",width:'20px'}}>{value[0]}</div>
                 <Slider
                     value={value}
                     onChange={handleChange}
-                    valueLabelDisplay="auto"
+                    style={{width:'130px'}}
                 />
-                    <span>{value[1]}</span>
+                    <div style={{paddingLeft:'15px'}}>{value[1]}</div>
                 </div>
+                <Button variant={'contained'} onClick={onSearchCardsNumber}>search</Button>
                 <Button variant={'contained'} onClick={onAddPackButtonClickHandler}>ADD NEW PACK</Button>
             </div>
-            <PacksList searchedPackList={searchedPackList} cardNumber={value}/>
+            <PacksList searchedPackList={searchedPackList} cardNumber={value} min={min} max={max}/>
         </div>
     );
 };

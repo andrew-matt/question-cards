@@ -23,10 +23,13 @@ import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
 
 type PropsType={
     searchedPackList:ResponseCardPackType[],
-    cardNumber:number[]
+    cardNumber:number[],
+    min:number,
+    max:number
 }
 
 export const PacksList = (props:PropsType) => {
+const {max,min}=props
 
     const [editMode, setEditMode] = useState(false);
     const [changedPackID, setChangedPackID] = useState('');
@@ -53,9 +56,9 @@ export const PacksList = (props:PropsType) => {
         const page = newPage + 1 // initially newPage value is equal to currentPage value
         dispatch(setCurrentPage(page));
         if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id}));
+            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
         } else {
-            dispatch(fetchPacks({page, pageCount}));
+            dispatch(fetchPacks({page, pageCount, min, max}));
         }
     };
 
@@ -63,9 +66,9 @@ export const PacksList = (props:PropsType) => {
         const pageCount = +e.target.value;
         dispatch(setPacksPerPage(pageCount));
         if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id}));
+            dispatch(fetchPacks({page, pageCount, user_id,min,max}));
         } else {
-            dispatch(fetchPacks({page, pageCount}));
+            dispatch(fetchPacks({page, pageCount,min,max}));
         }
     };
 
