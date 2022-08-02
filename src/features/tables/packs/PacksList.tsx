@@ -21,8 +21,7 @@ import {
 import {IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
 import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
-import {Cards} from "../../cards/Cards";
-import {NavLink} from "react-router-dom";
+import {NavLink} from 'react-router-dom';
 
 export const PacksList = () => {
 

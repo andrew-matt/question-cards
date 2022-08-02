@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {HashRouter, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {Header} from '../common/header/Header';
 import {Main} from '../common/main/Main';
 import {ErrorSnackbar} from '../common/errorSnackbar/ErrorSnackbar';
@@ -11,7 +11,6 @@ import {initializedAppTC} from './app-reducer';
 import CircularProgress from '@mui/material/CircularProgress/CircularProgress';
 import {AppBar, Button, Toolbar} from '@mui/material';
 import {logoutTC} from '../features/auth/login/login-reducer';
-import {fetchAllPacks} from "../features/tables/packs/packs-reducer";
 
 function App() {
     useEffect(() => {
