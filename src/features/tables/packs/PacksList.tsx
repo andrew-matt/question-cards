@@ -15,6 +15,7 @@ import {
     fetchUserPacks,
     removePack,
     RequestedPacksType,
+    setCurrentPackName,
     setRequestedPacks,
 } from './packs-reducer';
 import {IconButton, TablePagination, TextField} from '@mui/material';
@@ -99,6 +100,10 @@ export const PacksList = () => {
                             setChangedPackID(pack._id);
                         };
 
+                        const setCurrentPackNameHandler = () => {
+                            dispatch(setCurrentPackName(pack.name))
+                        }
+
                         const activateEditMode = () => {
                             if (editMode && changedPackID === pack._id) {
                                 return (
@@ -113,7 +118,13 @@ export const PacksList = () => {
                                     />
                                 );
                             } else {
-                                return <NavLink to={`/cards/${pack._id}`}>{pack.name}</NavLink>
+                                return <NavLink
+                                    style={{textDecoration:"none"}}
+                                    to={`/cards/${pack._id}`}
+                                    onClick={setCurrentPackNameHandler}
+                                >
+                                    {pack.name}
+                                </NavLink>
                             }
                         };
 

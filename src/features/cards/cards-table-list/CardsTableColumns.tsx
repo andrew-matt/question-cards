@@ -24,6 +24,7 @@ export const CardsTableColumns:React.FC<CardsTableColumnPropsType> = (props) => 
                     columns.map((col) => {
                         return <TableCell
                             key={col.headerName + Math.random()}
+                            style={{fontWeight:"bold"}}
                             width={col.width}
                         >{col.headerName}
                         </TableCell>

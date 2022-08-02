@@ -14,6 +14,7 @@ export const Cards: React.FC = () => {
     const dispatch:AppDispatch = useDispatch()
     const userID = useSelector<AppRootStateType, string>(state => state.profile.UserData._id);
     const cardsUserID = useSelector<AppRootStateType>(state => state.cards.packUserId)
+    const currentPackName = useSelector<AppRootStateType,string>(state => state.packs.nameOfCurrentPack)
 
     useEffect(() => {
         if (cardsPackID) dispatch(getCards(cardsPackID))
@@ -32,15 +33,17 @@ export const Cards: React.FC = () => {
     return (
         <div className={style.cards}>
             <div className={style.cards__wrapper}>
-                <h2 className={style.cards__title}>Cards</h2>
-                <Button
-                    variant="contained"
-                    onClick={addCardHandler}
-                    disabled={userID !== cardsUserID}
-                >Add task
-                </Button>
+                <header className={style.cards__header}>
+                    <h2 className={style.cards__title}>{currentPackName}</h2>
+                    <Button
+                        variant="contained"
+                        onClick={addCardHandler}
+                        disabled={userID !== cardsUserID}
+                    >Add task
+                    </Button>
+                </header>
+                <CardsTable/>
             </div>
-            <CardsTable/>
         </div>
     );
 };

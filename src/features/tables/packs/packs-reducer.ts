@@ -7,6 +7,7 @@ const _initialState: ResponseCardPackType[] = [];
 const initialState = {
     packsList: [] as ResponseCardPackType[],
     requestedPacks: `User's` as RequestedPacksType,
+    nameOfCurrentPack:""
 };
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksReducerActionTypes): InitialStateType => {
@@ -19,6 +20,8 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
         // return [];
         case 'packs/SET-REQUESTED-PACKS':
             return {...state, requestedPacks: action.requestedPacks};
+        case "packs/SET-CURRENT-PACK-NAME":
+            return {...state, nameOfCurrentPack:action.name}
         default: {
             return state;
         }
@@ -32,6 +35,8 @@ export const setRequestedPacks = (requestedPacks: RequestedPacksType) => ({
     type: 'packs/SET-REQUESTED-PACKS',
     requestedPacks,
 } as const);
+export const setCurrentPackName = (name:string) => ({type: 'packs/SET-CURRENT-PACK-NAME',name} as const);
+
 
 //thunks
 export const fetchUserPacks = (user_id: string): AppThunk => async (dispatch) => {
@@ -120,9 +125,11 @@ type InitialStateType = typeof initialState
 type setPacksListType = ReturnType<typeof setPacksList>
 type clearPacksListType = ReturnType<typeof clearPacksList>
 type setRequestedPacksType = ReturnType<typeof setRequestedPacks>
+type  setCurrentNamePackType = ReturnType<typeof setCurrentPackName>
 
 export type PacksReducerActionTypes = setPacksListType
     | clearPacksListType
     | setRequestedPacksType
+| setCurrentNamePackType
 
 export type RequestedPacksType = `User's` | 'All'

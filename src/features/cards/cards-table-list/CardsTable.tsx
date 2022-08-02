@@ -11,10 +11,10 @@ import {CardType} from "../cards-api";
 const CardsTable:React.FC = () => {
 
     const columns = [
-        {field: 'question', headerName: 'Question', width: 150},
-        {field: 'answer', headerName: 'Answer', width: 150},
-        {field: 'lastUpdate', headerName: 'Last Updated', width: 30},
-        {field: 'grade', headerName: 'Grade', width: 60},
+        {field: 'question', headerName: 'Question', width: 400},
+        {field: 'answer', headerName: 'Answer', width: 400},
+        {field: 'lastUpdate', headerName: 'Last Updated', width: 150},
+        {field: 'grade', headerName: 'Grade', width: 100},
     ]
     const rows = useSelector<AppRootStateType, CardType[]>((state) => state.cards.cards)
 
