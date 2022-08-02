@@ -6,11 +6,17 @@ const instance = axios.create({
 })
 
 export const cardsAPI = {
-    getCards(idCardPack: string) {
+    // getCards(idCardPack: string) {
+    //     return instance.get<ResponseGetCardType>('/cards/card', {
+    //         params: {
+    //             cardsPack_id: idCardPack,
+    //         },
+    //
+    //     })
+    // },
+    getCards(queryParam: getCardQueryParams) {
         return instance.get<ResponseGetCardType>('/cards/card', {
-            params: {
-                cardsPack_id: idCardPack
-            }
+            params: queryParam
         })
     },
     createCard(data: RequestCreateCardType) {
@@ -77,4 +83,15 @@ export type RequestUpdateCardType = {
         question?: string
         answer?:string
     }
+}
+
+export type getCardQueryParams = {
+    cardAnswer?:string
+    cardQuestion?:string
+    cardsPack_id?:string | undefined
+    min?:string
+    max?:string
+    sortCards?:string
+    page?:number
+    pageCount?:number
 }
