@@ -26,13 +26,10 @@ export const Packs = () => {
 
        let searchedPackList=packs; //это значение передаю в PacksList
     if (inputValue>'') {
-        searchedPackList= packs.filter((pack)=>
-        pack.name.includes(inputValue)       //проверка на совпадение значения инпута и имени пака
+        searchedPackList = packs.filter((pack) =>
+            pack.name.includes(inputValue)       //проверка на совпадение значения инпута и имени пака
         )
     }
-packs.filter((pack)=>{
-
-    })
 
     const onUserPacksButtonClickHandler = () => {
         const page = 1;
@@ -71,11 +68,13 @@ packs.filter((pack)=>{
                 <Button variant={requestedPacks === 'All' ? 'contained' : 'outlined'}
                         onClick={onAllPacksButtonClickHandler}>ALL PACKS</Button>
                 <div style={{width:'160px'}}>
+                    <span>{value[0]}</span>
                 <Slider
                     value={value}
                     onChange={handleChange}
                     valueLabelDisplay="auto"
                 />
+                    <span>{value[1]}</span>
                 </div>
                 <Button variant={'contained'} onClick={onAddPackButtonClickHandler}>ADD NEW PACK</Button>
             </div>
