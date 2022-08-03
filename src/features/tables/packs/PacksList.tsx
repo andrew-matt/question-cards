@@ -14,7 +14,7 @@ import {
     RequestedPacksType,
     setCurrentPackName,
     setCurrentPage,
-    setPacksPerPage,
+    setPacksPerPage, setPacksSortBy, setPacksSortOrder,
     setRequestedPacks,
 } from './packs-reducer';
 import {Box, IconButton, TablePagination, TextField} from '@mui/material';
@@ -36,7 +36,6 @@ type PropsType = {
 export const PacksList = (props: PropsType) => {
     const {max, min} = props;
 
-    const [order, setOrder] = React.useState<Order>('desc');
     const [orderBy, setOrderBy] = React.useState<keyof ResponseCardPackType>('updated');
     const [dense, setDense] = React.useState(false);
 
@@ -49,10 +48,12 @@ export const PacksList = (props: PropsType) => {
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
     const user_id = useAppSelector<string>(state => state.profile.UserData._id);
     const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
+    const sortPacks = useAppSelector<string>(state => state.packs.sortBy);
+    const order = useAppSelector<Order>(state => state.packs.sortOrder);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(fetchPacks({page, pageCount, user_id}));
+        dispatch(fetchPacks(queryParams, requestedPacks));
         return () => {
             dispatch(setRequestedPacks(`User's`));
             dispatch(setCurrentPage(1));
@@ -60,24 +61,18 @@ export const PacksList = (props: PropsType) => {
         };
     }, []);
 
+    const queryParams = {page, pageCount, user_id, min, max, sortPacks};
+
     const onPageChangeHandler = (event: unknown, newPage: number) => {
         const page = newPage + 1; // initially newPage value is equal to currentPage value
         dispatch(setCurrentPage(page));
-        if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
-        } else {
-            dispatch(fetchPacks({page, pageCount, min, max}));
-        }
+        dispatch(fetchPacks({...queryParams, page}, requestedPacks));
     };
 
     const onPacksPerPageChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const pageCount = +e.target.value;
         dispatch(setPacksPerPage(pageCount));
-        if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
-        } else {
-            dispatch(fetchPacks({page, pageCount, min, max}));
-        }
+        dispatch(fetchPacks({...queryParams, pageCount}, requestedPacks));
     };
 
     const handleRequestSort = (
@@ -85,8 +80,11 @@ export const PacksList = (props: PropsType) => {
         property: keyof ResponseCardPackType,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
+        const sortPacks = `${isAsc ? 0 : 1}${property}`;
+        dispatch(setPacksSortOrder(isAsc ? 'desc' : 'asc'));
         setOrderBy(property);
+        dispatch(setPacksSortBy(sortPacks));
+        dispatch(fetchPacks({...queryParams, sortPacks}, requestedPacks));
     };
 
     const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +132,7 @@ export const PacksList = (props: PropsType) => {
                                     };
 
                                     const onDeleteButtonClickHandler = () => {
-                                        dispatch(removePack(pack._id, requestedPacks, {page, pageCount, user_id}));
+                                        dispatch(removePack(pack._id, requestedPacks, queryParams));
                                     };
 
                                     const onEditButtonClickHandler = () => {
@@ -208,7 +206,7 @@ export const PacksList = (props: PropsType) => {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    labelRowsPerPage={"Packs per page"}
+                    labelRowsPerPage={'Packs per page'}
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={packsAmount}
@@ -216,6 +214,8 @@ export const PacksList = (props: PropsType) => {
                     page={page - 1} // TablePagination component requires the first page to start with number 0
                     onPageChange={onPageChangeHandler}
                     onRowsPerPageChange={onPacksPerPageChangeHandler}
+                    showFirstButton
+                    showLastButton
                 />
             </Paper>
             <FormControlLabel
