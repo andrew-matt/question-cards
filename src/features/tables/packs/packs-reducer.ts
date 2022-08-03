@@ -9,7 +9,7 @@ const initialState = {
     currentPage: 1,
     packsPerPage: 5,
     requestedPacks: `User's` as RequestedPacksType,
-    nameOfCurrentPack:""
+    nameOfCurrentPack: '',
 };
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksReducerActionTypes): InitialStateType => {
@@ -26,8 +26,8 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
             return {...state, currentPage: action.currentPage};
         case 'packs/SET-REQUESTED-PACKS':
             return {...state, requestedPacks: action.requestedPacks};
-        case "packs/SET-CURRENT-PACK-NAME":
-            return {...state, nameOfCurrentPack:action.name}
+        case 'packs/SET-CURRENT-PACK-NAME':
+            return {...state, nameOfCurrentPack: action.name};
         default: {
             return state;
         }
@@ -44,18 +44,18 @@ export const setRequestedPacks = (requestedPacks: RequestedPacksType) => ({
     type: 'packs/SET-REQUESTED-PACKS',
     requestedPacks,
 } as const);
-export const setCurrentPackName = (name:string) => ({type: 'packs/SET-CURRENT-PACK-NAME',name} as const);
+export const setCurrentPackName = (name: string) => ({type: 'packs/SET-CURRENT-PACK-NAME', name} as const);
 
 
 //thunks
 export const fetchPacks = (data: GetPacksParamsType = {}): AppThunk => async (dispatch) => {
-    const {page, pageCount, user_id,min, max} = data;
+    const {page, pageCount, user_id, min, max} = data;
     let response;
     try {
         dispatch(setAppRequestStatusAC('loading'));
 
         if (user_id) {
-            response = await packsAPI.getPacks({page, pageCount, user_id,min, max});
+            response = await packsAPI.getPacks({page, pageCount, user_id, min, max});
         } else {
             response = await packsAPI.getPacks({page, pageCount, min, max});
         }
@@ -139,6 +139,6 @@ export type PacksReducerActionTypes = setPacksListType
     | setPacksPerPageType
     | setCurrentPageType
     | setRequestedPacksType
-| setCurrentNamePackType
+    | setCurrentNamePackType
 
 export type RequestedPacksType = `User's` | 'All'

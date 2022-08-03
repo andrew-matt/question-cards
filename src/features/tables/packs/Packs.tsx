@@ -19,7 +19,7 @@ export const Packs = () => {
     const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
 
     const [inputValue, setInputValue] = useState<string>('');
-    const [value, setValue] = useState<number[]>([0, 100]);
+    const [value, setValue] = useState<number[]>([0, 110]);
     const min = value[0];
     const max = value[1];
 
@@ -30,7 +30,7 @@ export const Packs = () => {
     let searchedPackList = packs; //это значение передаю в PacksList
     if (inputValue > '') {
         searchedPackList = packs.filter((pack) =>
-            pack.name.includes(inputValue),       //проверка на совпадение значения инпута и имени пака
+            pack.name.toLowerCase().includes(inputValue.toLowerCase()),       //проверка на совпадение значения инпута и имени пака
         );
     }
 
@@ -52,8 +52,12 @@ export const Packs = () => {
         dispatch(addPack(requestedPacks, pageCount, user_id));
     };
 
-    const onSearchCardsNumber = () => {
-        dispatch(fetchPacks({page, pageCount, user_id, min, max}));
+    const onChangeCommittedHandler = () => {
+        if (requestedPacks === `User's`) {
+            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
+        } else {
+            dispatch(fetchPacks({page, pageCount, min, max}));
+        }
     };
 
     if (!isLoggedIn) {
@@ -64,27 +68,45 @@ export const Packs = () => {
         <div className={style.container}>
             <div className={style.header}>
                 <span className={style.title}>Packs list</span>
+                <div>
+                    <Button
+                        variant={requestedPacks === `User's` ? 'contained' : 'outlined'}
+                        onClick={onUserPacksButtonClickHandler}
+                        className={style.headerButtons}
+                    >
+                        MY PACKS
+                    </Button>
+                    <Button
+                        variant={requestedPacks === 'All' ? 'contained' : 'outlined'}
+                        onClick={onAllPacksButtonClickHandler}
+                        className={style.headerButtons}
+                    >
+                        ALL PACKS
+                    </Button>
+                </div>
+                <Button variant={'contained'} onClick={onAddPackButtonClickHandler}>ADD NEW PACK</Button>
+            </div>
+            <div className={style.controlPanel}>
                 <div className={style.search}>
-                    <input type="text"
-                           onChange={(e) => setInputValue(e.currentTarget.value)}
-                           className={style.searchField} placeholder="Provide your text"/>
+                    <input
+                        type="text"
+                        onChange={(e) => setInputValue(e.currentTarget.value)}
+                        className={style.searchField} placeholder="Provide your text"
+                    />
                     <SearchIcon fontSize={'small'} className={style.searchIcon}/>
                 </div>
-                <Button variant={requestedPacks === `User's` ? 'contained' : 'outlined'}
-                        onClick={onUserPacksButtonClickHandler}>MY PACKS</Button>
-                <Button variant={requestedPacks === 'All' ? 'contained' : 'outlined'}
-                        onClick={onAllPacksButtonClickHandler}>ALL PACKS</Button>
-                <div style={{width: '170px', display: 'flex'}}>
-                    <div style={{paddingRight: '15px', width: '20px'}}>{value[0]}</div>
+                <div className={style.cardsAmountSliderContainer}>
+                    <div className={style.cardsAmountSliderMinValue}>{value[0]}</div>
                     <Slider
+                        min={0}
+                        max={110}
                         value={value}
                         onChange={handleChange}
-                        style={{width: '130px'}}
+                        onChangeCommitted={onChangeCommittedHandler}
+                        className={style.cardsAmountSlider}
                     />
-                    <div style={{paddingLeft: '15px'}}>{value[1]}</div>
+                    <div className={style.cardsAmountSliderMaxValue}>{value[1]}</div>
                 </div>
-                <Button variant={'contained'} onClick={onSearchCardsNumber}>search</Button>
-                <Button variant={'contained'} onClick={onAddPackButtonClickHandler}>ADD NEW PACK</Button>
             </div>
             <PacksList searchedPackList={searchedPackList} cardNumber={value} min={min} max={max}/>
         </div>

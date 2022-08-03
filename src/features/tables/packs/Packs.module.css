@@ -7,12 +7,45 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .title {
     font-size: 26px;
     font-weight: 600;
+}
+
+.headerButtons {
+    margin: 0 10px;
+}
+
+.controlPanel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cardsAmountSliderContainer {
+    display: flex;
+}
+
+.cardsAmountSlider {
+    width: 300px;
+}
+
+.cardsAmountSliderMinValue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 50px;
+}
+
+.cardsAmountSliderMaxValue {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 60px;
 }
 
 .search {

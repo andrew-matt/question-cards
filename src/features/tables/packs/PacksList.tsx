@@ -208,6 +208,7 @@ export const PacksList = (props: PropsType) => {
                     </Table>
                 </TableContainer>
                 <TablePagination
+                    labelRowsPerPage={"Packs per page"}
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={packsAmount}
