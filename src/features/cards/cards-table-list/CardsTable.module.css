@@ -1,0 +1,9 @@
+.column {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.column:hover {
+    background-color: #c9c8c8;
+}
+

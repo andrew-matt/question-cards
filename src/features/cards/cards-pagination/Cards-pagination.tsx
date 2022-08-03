@@ -12,7 +12,7 @@ export const CardsPagination = () => {
     const totalCardsCount = useSelector<AppRootStateType, number>(state => state.cards.cardsTotalCount)
     const pageCount = useSelector<AppRootStateType, number>(state => state.cards.queryParams.pageCount || 5)
     const page = useSelector<AppRootStateType, number>(state => state.cards.queryParams.page || 0)
-    console.log(page)
+
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,

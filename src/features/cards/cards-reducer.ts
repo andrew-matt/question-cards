@@ -13,6 +13,8 @@ import {setAppErrorAC, setAppRequestStatusAC} from "../../app/app-reducer";
 const GET_CARDS = "CARDS-REDUCER/GET-CARDS"
 const CLEAR_CARDS_LIST = "CARDS-REDUCER/CLEAR_CARDS_LIST"
 const ADD_QUERY_PARAMS = "CARDS-REDUCER/ADD_QUERY_PARAMS"
+const SET_SORT_PARAMS = "CARDS-REDUCER/SET_SORT_PARAMS"
+const CLEAR_SORT_PARAMS = "CARDS-REDUCER/CLEAR_SORT_PARAMS"
 
 const initialState = {
     cards: [] as CardType[],
@@ -25,9 +27,15 @@ const initialState = {
     token: "",
     tokenDeathTime: 0,
     queryParams: {
-        pageCount:5 ,
-        page:1
-    } as getCardQueryParams
+        pageCount: 5,
+        page: 1
+    } as getCardQueryParams,
+    sortParams: {} as SortParamsType
+}
+
+export type SortParamsType = {
+    sort: string
+    field: string
 }
 
 type InitialStateType = typeof initialState
@@ -40,6 +48,10 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Act
             return {...state, cards: []}
         case ADD_QUERY_PARAMS:
             return {...state, queryParams: {...state.queryParams, ...action.newQueryParams}}
+        case SET_SORT_PARAMS:
+            return {...state, sortParams: action.sortParams}
+        case CLEAR_SORT_PARAMS:
+            return {...state, sortParams: {sort:"",field:""}}
         default:
             return state
     }
@@ -48,6 +60,8 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Act
 export type ActionsCardsReducer = setCardsACType
     | ClearCardsListACType
     | AddQueryParamsACType
+    | SetSortParamsACType
+    | clearSortParamsACType
 //ACTIONS
 export const setCardsAC = (data: ResponseGetCardType) => ({type: GET_CARDS, data} as const)
 export type setCardsACType = ReturnType<typeof setCardsAC>
@@ -60,6 +74,12 @@ export const AddQueryParamsAC = (newQueryParams: getCardQueryParams) => ({
     newQueryParams
 } as const)
 export type AddQueryParamsACType = ReturnType<typeof AddQueryParamsAC>
+
+export const setSortParamsAC = (sortParams: SortParamsType) => ({type: SET_SORT_PARAMS, sortParams} as const)
+export type SetSortParamsACType = ReturnType<typeof setSortParamsAC>
+
+export const clearSortParamsAC = () => ({type: CLEAR_SORT_PARAMS} as const)
+export type clearSortParamsACType = ReturnType<typeof clearSortParamsAC>
 
 //THUNKS
 
@@ -87,7 +107,7 @@ export const addCard = (data: RequestCreateCardType): AppThunk => (dispatch, get
             return res
         })
         .then((res) => {
-            dispatch(getCards({cardsPack_id: data.card.cardsPack_id,...getState().cards.queryParams}))
+            dispatch(getCards({cardsPack_id: data.card.cardsPack_id, ...getState().cards.queryParams}))
             //dispatch(getCards(data.card.cardsPack_id))
         })
         .catch((err: AxiosError<{ error: string }>) => {
@@ -107,7 +127,7 @@ export const deleteCard = (cardID: string, cardsPackID: string): AppThunk => (di
             return res
         })
         .then((res) => {
-            dispatch(getCards({cardsPack_id: cardsPackID,...getState().cards.queryParams}))
+            dispatch(getCards({cardsPack_id: cardsPackID, ...getState().cards.queryParams}))
             //  dispatch(getCards(cardsPackID))
         })
         .catch((err: AxiosError<{ error: string }>) => {
@@ -119,7 +139,7 @@ export const deleteCard = (cardID: string, cardsPackID: string): AppThunk => (di
         })
 }
 
-export const updateCard = (cardID: string, cardsPackID: string): AppThunk => (dispatch,getState) => {
+export const updateCard = (cardID: string, cardsPackID: string): AppThunk => (dispatch, getState) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.updateCard({
         card: {
@@ -132,7 +152,7 @@ export const updateCard = (cardID: string, cardsPackID: string): AppThunk => (di
             return res
         })
         .then((res) => {
-            dispatch(getCards({cardsPack_id: cardsPackID,...getState().cards.queryParams}))
+            dispatch(getCards({cardsPack_id: cardsPackID, ...getState().cards.queryParams}))
             // dispatch(getCards(cardsPackID))
         })
         .catch((err: AxiosError<{ error: string }>) => {
