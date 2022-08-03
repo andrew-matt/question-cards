@@ -5,7 +5,7 @@ import CardsTable from "./cards-table-list/CardsTable";
 import Button from '@mui/material/Button/Button';
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
-import {addCard,  ClearCardsListAC, getCards} from "./cards-reducer";
+import {addCard, ClearCardsListAC, clearSortParamsAC, getCards} from "./cards-reducer";
 import {AppDispatch, AppRootStateType} from "../../app/store";
 import {getCardQueryParams} from "./cards-api";
 import {CardsSearchByQuestion} from "./cards-search-by-question/CardsSearchByQuestion";
@@ -26,6 +26,7 @@ export const Cards: React.FC = () => {
         dispatch(getCards({...queryParams, cardsPack_id:cardsPackID}))
         return () => {
             dispatch(ClearCardsListAC())
+
         }
     }, [queryParams])
 

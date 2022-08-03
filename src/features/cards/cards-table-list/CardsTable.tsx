@@ -13,8 +13,8 @@ const CardsTable:React.FC = () => {
     const columns = [
         {field: 'question', headerName: 'Question', width: 400},
         {field: 'answer', headerName: 'Answer', width: 400},
-        {field: 'lastUpdate', headerName: 'Last Updated', width: 150},
-        {field: 'grade', headerName: 'Grade', width: 100},
+        {field: 'updated', headerName: 'Last Updated', width: 200},
+        {field: 'grade', headerName: 'Grade', width: 200},
     ]
     const rows = useSelector<AppRootStateType, CardType[]>((state) => state.cards.cards)
 
