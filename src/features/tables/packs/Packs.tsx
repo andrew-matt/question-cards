@@ -17,11 +17,14 @@ export const Packs = () => {
     const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
     const isLoggedIn = useAppSelector<boolean>(state => state.login.isLoggedIn);
     const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
+    const sortPacks = useAppSelector<string>(state => state.packs.sortBy);
 
     const [inputValue, setInputValue] = useState<string>('');
     const [value, setValue] = useState<number[]>([0, 110]);
     const min = value[0];
     const max = value[1];
+
+    const queryParams = {page, pageCount, user_id, min, max, sortPacks};
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
@@ -36,28 +39,26 @@ export const Packs = () => {
 
     const onUserPacksButtonClickHandler = () => {
         const page = 1;
+        const requestedPacks = `User's`;
         dispatch(setCurrentPage(page));
-        dispatch(fetchPacks({page, pageCount, user_id}));
-        dispatch(setRequestedPacks(`User's`));
+        dispatch(setRequestedPacks(requestedPacks));
+        dispatch(fetchPacks({...queryParams, page}, requestedPacks));
     };
 
     const onAllPacksButtonClickHandler = () => {
         const page = 1;
+        const requestedPacks = 'All';
         dispatch(setCurrentPage(page));
-        dispatch(fetchPacks({page, pageCount}));
-        dispatch(setRequestedPacks('All'));
+        dispatch(setRequestedPacks(requestedPacks));
+        dispatch(fetchPacks({...queryParams, page}, requestedPacks));
     };
 
     const onAddPackButtonClickHandler = () => {
-        dispatch(addPack(requestedPacks, pageCount, user_id));
+        dispatch(addPack(queryParams, requestedPacks));
     };
 
     const onChangeCommittedHandler = () => {
-        if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
-        } else {
-            dispatch(fetchPacks({page, pageCount, min, max}));
-        }
+        dispatch(fetchPacks(queryParams, requestedPacks));
     };
 
     if (!isLoggedIn) {

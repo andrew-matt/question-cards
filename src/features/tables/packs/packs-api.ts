@@ -57,6 +57,7 @@ export type GetPacksParamsType = {
     user_id?: string
     min?:number
     max?:number
+    sortPacks?: string
 }
 
 export type UpdatePackParamsType = {
