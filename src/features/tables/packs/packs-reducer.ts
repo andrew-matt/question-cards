@@ -49,15 +49,15 @@ export const setCurrentPackName = (name:string) => ({type: 'packs/SET-CURRENT-PA
 
 //thunks
 export const fetchPacks = (data: GetPacksParamsType = {}): AppThunk => async (dispatch) => {
-    const {page, pageCount, user_id} = data;
+    const {page, pageCount, user_id,min, max} = data;
     let response;
     try {
         dispatch(setAppRequestStatusAC('loading'));
 
         if (user_id) {
-            response = await packsAPI.getPacks({page, pageCount, user_id});
+            response = await packsAPI.getPacks({page, pageCount, user_id,min, max});
         } else {
-            response = await packsAPI.getPacks({page, pageCount});
+            response = await packsAPI.getPacks({page, pageCount, min, max});
         }
 
         dispatch(setPacksAmount(response.data.cardPacksTotalCount));

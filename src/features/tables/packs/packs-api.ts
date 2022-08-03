@@ -55,6 +55,8 @@ export type GetPacksParamsType = {
     page?: number
     pageCount?: number
     user_id?: string
+    min?:number
+    max?:number
 }
 
 export type UpdatePackParamsType = {

@@ -9,9 +9,10 @@ import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import {logoutTC} from '../login/login-reducer';
 import {Avatar} from './Avatar';
 import {EditableSpan} from './EditableSpan';
-import {Navigate} from 'react-router-dom';
+import {Navigate, useNavigate} from 'react-router-dom';
 
 export const Profile = () => {
+    const navigate=useNavigate()
     const isLoggedIn = useSelector<AppRootStateType>(state => state.login.isLoggedIn);
     const profile = useSelector<AppRootStateType, UserDataType>(state => state.profile.UserData);
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -33,11 +34,14 @@ export const Profile = () => {
     if (!isLoggedIn) {
         return <Navigate to={'/login'}/>
     }
+    const onBackClickHandler=()=>{
+        return navigate('/packs')
+    }
 
     return (
         <div className={style.mainBlock}>
             <div className={style.back}>
-                <span> <KeyboardBackspaceIcon style={{paddingTop: '5px'}}/>  Back to Pack List</span>
+                <span onClick={onBackClickHandler}> <KeyboardBackspaceIcon style={{paddingTop: '5px'}}/>  Back to Pack List</span>
             </div>
             <Paper elevation={1} className={style.paper}>
                 <span className={style.personalInfSpan}>Personal Information</span>

@@ -23,13 +23,21 @@ import {Delete, Edit, School} from '@mui/icons-material';
 import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
 import {NavLink} from 'react-router-dom';
 
-export const PacksList = () => {
+type PropsType={
+    searchedPackList:ResponseCardPackType[],
+    cardNumber:number[],
+    min:number,
+    max:number
+}
+
+export const PacksList = (props:PropsType) => {
+const {max,min}=props
 
     const [editMode, setEditMode] = useState(false);
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
 
-    const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
+    //const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
     const packsAmount = useAppSelector<number>(state => state.packs.packsAmount);
     const page = useAppSelector<number>(state => state.packs.currentPage);
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
@@ -50,9 +58,9 @@ export const PacksList = () => {
         const page = newPage + 1 // initially newPage value is equal to currentPage value
         dispatch(setCurrentPage(page));
         if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id}));
+            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
         } else {
-            dispatch(fetchPacks({page, pageCount}));
+            dispatch(fetchPacks({page, pageCount, min, max}));
         }
     };
 
@@ -60,9 +68,9 @@ export const PacksList = () => {
         const pageCount = +e.target.value;
         dispatch(setPacksPerPage(pageCount));
         if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id}));
+            dispatch(fetchPacks({page, pageCount, user_id,min,max}));
         } else {
-            dispatch(fetchPacks({page, pageCount}));
+            dispatch(fetchPacks({page, pageCount,min,max}));
         }
     };
 
@@ -82,7 +90,7 @@ export const PacksList = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {packs.map((pack) => {
+                    {props.searchedPackList.map((pack) => {
                         const date = new Date(pack.updated);
                         const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 
