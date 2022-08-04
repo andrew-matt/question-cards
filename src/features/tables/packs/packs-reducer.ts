@@ -13,6 +13,7 @@ const initialState = {
     nameOfCurrentPack: '',
     sortBy: '0updated',
     sortOrder: 'desc' as Order,
+    searchedValue: '',
 };
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksReducerActionTypes): InitialStateType => {
@@ -35,6 +36,8 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
             return {...state, sortBy: action.sortBy}
         case 'packs/SET-PACKS-SORT-ORDER':
             return {...state, sortOrder: action.sortOrder}
+        case 'packs/SET-SEARCHED-VALUE':
+            return {...state, searchedValue: action.searchedValue}
         default: {
             return state;
         }
@@ -54,19 +57,19 @@ export const setRequestedPacks = (requestedPacks: RequestedPacksType) => ({
 export const setCurrentPackName = (name: string) => ({type: 'packs/SET-CURRENT-PACK-NAME', name} as const);
 export const setPacksSortBy = (sortBy: string) => ({type: 'packs/SET-PACKS-SORT-BY', sortBy} as const);
 export const setPacksSortOrder = (sortOrder: Order) => ({type: 'packs/SET-PACKS-SORT-ORDER', sortOrder} as const);
-
+export const setSearchedValue = (searchedValue: string) => ({type: 'packs/SET-SEARCHED-VALUE', searchedValue} as const);
 
 //thunks
-export const fetchPacks = (data: GetPacksParamsType = {}, requestedPacks: RequestedPacksType): AppThunk => async (dispatch) => {
-    const {page, pageCount, user_id, min, max, sortPacks} = data;
+export const fetchPacks = (queryParams: GetPacksParamsType = {}, requestedPacks: RequestedPacksType): AppThunk => async (dispatch) => {
+    const {page, pageCount, user_id, min, max, sortPacks, packName} = queryParams;
     let response;
     try {
         dispatch(setAppRequestStatusAC('loading'));
 
         if (requestedPacks === `User's`) {
-            response = await packsAPI.getPacks({page, pageCount, user_id, min, max, sortPacks});
+            response = await packsAPI.getPacks({page, pageCount, user_id, min, max, sortPacks, packName});
         } else {
-            response = await packsAPI.getPacks({page, pageCount, min, max, sortPacks});
+            response = await packsAPI.getPacks({page, pageCount, min, max, sortPacks, packName});
         }
 
         dispatch(setPacksAmount(response.data.cardPacksTotalCount));
@@ -133,6 +136,7 @@ type setRequestedPacksType = ReturnType<typeof setRequestedPacks>
 type  setCurrentNamePackType = ReturnType<typeof setCurrentPackName>
 type  setPacksSortByType = ReturnType<typeof setPacksSortBy>
 type  setPacksSortOrderType = ReturnType<typeof setPacksSortOrder>
+type  setSearchedValueType = ReturnType<typeof setSearchedValue>
 
 export type PacksReducerActionTypes = setPacksListType
     | clearPacksListType
@@ -143,5 +147,6 @@ export type PacksReducerActionTypes = setPacksListType
     | setCurrentNamePackType
     | setPacksSortByType
     | setPacksSortOrderType
+    | setSearchedValueType
 
 export type RequestedPacksType = `User's` | 'All'

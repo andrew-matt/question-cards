@@ -52,6 +52,7 @@ type GetPacksResponseType = {
 }
 
 export type GetPacksParamsType = {
+    packName?: string
     page?: number
     pageCount?: number
     user_id?: string
