@@ -15,13 +15,15 @@ const CLEAR_CARDS_LIST = "CARDS-REDUCER/CLEAR_CARDS_LIST"
 const ADD_QUERY_PARAMS = "CARDS-REDUCER/ADD_QUERY_PARAMS"
 const SET_SORT_PARAMS = "CARDS-REDUCER/SET_SORT_PARAMS"
 const CLEAR_SORT_PARAMS = "CARDS-REDUCER/CLEAR_SORT_PARAMS"
+const CHANGE_CARDS_TOTAL_COUNT = "CARDS-REDUCER/CHANGE_CARDS_TOTAL_COUNT"
+
 
 const initialState = {
     cards: [] as CardType[],
     packUserId: "",
     page: 0,
     pageCount: 0,
-    cardsTotalCount: 0,
+    cardsTotalCount: -1,
     minGrade: 0,
     maxGrade: 0,
     token: "",
@@ -51,7 +53,9 @@ export const cardsReducer = (state: InitialStateType = initialState, action: Act
         case SET_SORT_PARAMS:
             return {...state, sortParams: action.sortParams}
         case CLEAR_SORT_PARAMS:
-            return {...state, sortParams: {sort:"",field:""}}
+            return {...state, sortParams: {sort: "", field: ""}}
+        case CHANGE_CARDS_TOTAL_COUNT:
+            return {...state, cardsTotalCount: action.value}
         default:
             return state
     }
@@ -62,6 +66,7 @@ export type ActionsCardsReducer = setCardsACType
     | AddQueryParamsACType
     | SetSortParamsACType
     | clearSortParamsACType
+    | changeCardsTotalCountACType
 //ACTIONS
 export const setCardsAC = (data: ResponseGetCardType) => ({type: GET_CARDS, data} as const)
 export type setCardsACType = ReturnType<typeof setCardsAC>
@@ -80,6 +85,9 @@ export type SetSortParamsACType = ReturnType<typeof setSortParamsAC>
 
 export const clearSortParamsAC = () => ({type: CLEAR_SORT_PARAMS} as const)
 export type clearSortParamsACType = ReturnType<typeof clearSortParamsAC>
+
+export const changeCardsTotalCountAC = (value: number) => ({type: CHANGE_CARDS_TOTAL_COUNT, value} as const)
+export type changeCardsTotalCountACType = ReturnType<typeof changeCardsTotalCountAC>
 
 //THUNKS
 
@@ -108,7 +116,6 @@ export const addCard = (data: RequestCreateCardType): AppThunk => (dispatch, get
         })
         .then((res) => {
             dispatch(getCards({cardsPack_id: data.card.cardsPack_id, ...getState().cards.queryParams}))
-            //dispatch(getCards(data.card.cardsPack_id))
         })
         .catch((err: AxiosError<{ error: string }>) => {
             const error = err.response

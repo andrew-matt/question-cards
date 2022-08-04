@@ -12,3 +12,11 @@
 .cards__title {
     margin: 0 0 20px;
 }
+
+.noCards {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color:darkred;
+    margin: 10px;
+}

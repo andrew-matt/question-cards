@@ -2,12 +2,11 @@ import TableCell from '@mui/material/TableCell/TableCell';
 import TableHead from '@mui/material/TableHead/TableHead';
 import TableRow from '@mui/material/TableRow/TableRow';
 import React, {useEffect} from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AddQueryParamsAC, clearSortParamsAC, setSortParamsAC, SortParamsType} from "../cards-reducer";
-import {AppRootStateType} from "../../../app/store";
+import {AddQueryParamsAC, clearSortParamsAC, setSortParamsAC} from "../cards-reducer";
 import style from './CardsTable.module.css'
-import {ArrowDownward, ArrowUpward, Delete} from "@mui/icons-material";
+import {ArrowDownward, ArrowUpward} from "@mui/icons-material";
 import {IconButton} from "@mui/material";
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/hooks';
 
 type CardsTableColumnPropsType = {
     columns: ColumnType[]
@@ -24,7 +23,7 @@ export const CardsTableColumns: React.FC<CardsTableColumnPropsType> = (props) =>
         columns
     } = props
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         return () => {
@@ -32,7 +31,7 @@ export const CardsTableColumns: React.FC<CardsTableColumnPropsType> = (props) =>
         }
     }, [dispatch])
 
-    const sortParams = useSelector<AppRootStateType, SortParamsType>(state => state.cards.sortParams)
+    const sortParams = useAppSelector(state => state.cards.sortParams)
 
     const sortClickHandler = (field: string) => {
         if (sortParams.field === field) {
