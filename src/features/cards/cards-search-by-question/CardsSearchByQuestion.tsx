@@ -1,15 +1,24 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import TextField from "@mui/material/TextField/TextField";
 import {useDispatch} from "react-redux";
 import {AddQueryParamsAC} from "../cards-reducer";
+import {useDebounce} from "../useDebounce";
 
 
 export const CardsSearchByQuestion: React.FC = () => {
 
+    const [searchRequest, setSearchRequest] = useState('')
+    const debouncedValue = useDebounce(searchRequest)
+
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(AddQueryParamsAC({cardQuestion: debouncedValue}))
+    },[debouncedValue, dispatch])
+
     const searchHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        dispatch(AddQueryParamsAC({cardQuestion: e.currentTarget.value}))
+        setSearchRequest(e.currentTarget.value)
+        // dispatch(AddQueryParamsAC({cardQuestion: e.currentTarget.value}))
     }
 
     return (

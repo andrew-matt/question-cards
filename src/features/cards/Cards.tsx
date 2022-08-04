@@ -34,6 +34,8 @@ export const Cards: React.FC = () => {
         if (cardsPackID) dispatch(addCard({card: {cardsPack_id: cardsPackID}}))
     }
 
+
+
     return (
         <div className={style.cards}>
             <div className={style.cards__wrapper}>
