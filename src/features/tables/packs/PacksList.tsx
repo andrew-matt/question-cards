@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,14 +8,14 @@ import Paper from '@mui/material/Paper';
 import {ResponseCardPackType} from './packs-api';
 import {
     changePack,
-    clearPacksList,
     fetchPacks,
     removePack,
     RequestedPacksType,
     setCurrentPackName,
     setCurrentPage,
-    setPacksPerPage, setPacksSortBy, setPacksSortOrder,
-    setRequestedPacks,
+    setPacksPerPage,
+    setPacksSortBy,
+    setPacksSortOrder,
 } from './packs-reducer';
 import {Box, IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
@@ -27,7 +27,6 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 type PropsType = {
-    searchedPackList: ResponseCardPackType[],
     cardNumber: number[],
     min: number,
     max: number
@@ -43,6 +42,8 @@ export const PacksList = (props: PropsType) => {
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
 
+    const dispatch = useAppDispatch();
+    const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
     const packsAmount = useAppSelector<number>(state => state.packs.packsAmount);
     const page = useAppSelector<number>(state => state.packs.currentPage);
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
@@ -50,18 +51,9 @@ export const PacksList = (props: PropsType) => {
     const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
     const sortPacks = useAppSelector<string>(state => state.packs.sortBy);
     const order = useAppSelector<Order>(state => state.packs.sortOrder);
-    const dispatch = useAppDispatch();
+    const packName = useAppSelector<string>(state => state.packs.searchedValue);
 
-    useEffect(() => {
-        dispatch(fetchPacks(queryParams, requestedPacks));
-        return () => {
-            dispatch(setRequestedPacks(`User's`));
-            dispatch(setCurrentPage(1));
-            dispatch(clearPacksList());
-        };
-    }, []);
-
-    const queryParams = {page, pageCount, user_id, min, max, sortPacks};
+    const queryParams = {page, pageCount, user_id, min, max, sortPacks, packName};
 
     const onPageChangeHandler = (event: unknown, newPage: number) => {
         const page = newPage + 1; // initially newPage value is equal to currentPage value
@@ -102,7 +94,7 @@ export const PacksList = (props: PropsType) => {
                             onRequestSort={handleRequestSort}
                         />
                         <TableBody>
-                            {stableSort(props.searchedPackList, getComparator(order, orderBy))
+                            {stableSort(packs, getComparator(order, orderBy))
                                 .map((pack) => {
 
                                     const date = new Date(pack.updated);
