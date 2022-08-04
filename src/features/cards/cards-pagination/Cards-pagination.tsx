@@ -1,17 +1,15 @@
 import TablePagination from '@mui/material/TablePagination/TablePagination';
 import React from 'react';
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../../app/store";
 import {AddQueryParamsAC} from "../cards-reducer";
-import {getCardQueryParams} from "../cards-api";
+import {useAppDispatch, useAppSelector} from "../../../common/hooks/hooks";
 
 export const CardsPagination = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const queryParams = useSelector<AppRootStateType, getCardQueryParams>(state => state.cards.queryParams)
-    const totalCardsCount = useSelector<AppRootStateType, number>(state => state.cards.cardsTotalCount)
-    const pageCount = useSelector<AppRootStateType, number>(state => state.cards.queryParams.pageCount || 5)
-    const page = useSelector<AppRootStateType, number>(state => state.cards.queryParams.page || 0)
+    const queryParams = useAppSelector(state => state.cards.queryParams)
+    const totalCardsCount = useAppSelector(state => state.cards.cardsTotalCount)
+    const pageCount = useAppSelector(state => state.cards.queryParams.pageCount || 5)
+    const page = useAppSelector(state => state.cards.queryParams.page || 0)
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
