@@ -1,5 +1,5 @@
 import style from './Packs.module.css';
-import {Navigate} from 'react-router-dom';
+import {Navigate, useSearchParams} from 'react-router-dom';
 import {PacksList} from './PacksList';
 import {Button, Slider} from '@mui/material';
 import {
@@ -17,6 +17,7 @@ import {ChangeEvent, useEffect, useState} from 'react';
 export const Packs = () => {
 
     const dispatch = useAppDispatch();
+
     const page = useAppSelector<number>(state => state.packs.currentPage);
     const user_id = useAppSelector<string>(state => state.profile.UserData._id);
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
@@ -25,13 +26,26 @@ export const Packs = () => {
     const sortPacks = useAppSelector<string>(state => state.packs.sortBy);
     const packName = useAppSelector<string>(state => state.packs.searchedValue);
 
+    const [searchParams, setSearchParams] = useSearchParams(requestedPacks);
+
     const debouncedValue = useDebounce<string>(packName, 500);
     const [value, setValue] = useState<number[]>([0, 110]);
     const min = value[0];
     const max = value[1];
 
     useEffect(() => {
-        dispatch(fetchPacks({...queryParams, packName}, requestedPacks));
+        let currentLocation = searchParams.get('accessory');
+
+        if (currentLocation) {
+            dispatch(setRequestedPacks(currentLocation as RequestedPacksType));
+        } else {
+            setSearchParams({accessory: requestedPacks});
+        }
+
+        dispatch(fetchPacks({
+            ...queryParams,
+            packName,
+        }, currentLocation ? currentLocation as RequestedPacksType : requestedPacks));
     }, [debouncedValue]);
 
     const queryParams = {page, pageCount, user_id, min, max, sortPacks, packName};
@@ -47,6 +61,7 @@ export const Packs = () => {
     const onUserPacksButtonClickHandler = () => {
         const page = 1;
         const requestedPacks = `User's`;
+        setSearchParams({accessory: `User's` as RequestedPacksType});
         dispatch(setCurrentPage(page));
         dispatch(setRequestedPacks(requestedPacks));
         dispatch(fetchPacks({...queryParams, page}, requestedPacks));
@@ -55,6 +70,7 @@ export const Packs = () => {
     const onAllPacksButtonClickHandler = () => {
         const page = 1;
         const requestedPacks = 'All';
+        setSearchParams({accessory: 'All' as RequestedPacksType});
         dispatch(setCurrentPage(page));
         dispatch(setRequestedPacks(requestedPacks));
         dispatch(fetchPacks({...queryParams, page}, requestedPacks));
