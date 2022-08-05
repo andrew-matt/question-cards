@@ -1,10 +1,10 @@
-import {ProfileAPI} from "../profile/Profile-API";
-import {AppThunk} from "../../../app/store";
-import {AxiosError} from "axios";
-import {setAppErrorAC} from "../../../app/app-reducer";
+import {ProfileAPI} from './Profile-API';
+import {AppThunk} from '../../../app/store';
+import {AxiosError} from 'axios';
+import {setAppErrorAC} from '../../../app/app-reducer';
 
 
-export type UserDataType= {
+export type UserDataType = {
     avatar: null | string
     created: string
     email: string
@@ -19,11 +19,11 @@ export type UserDataType= {
     __v: number | null
     _id: string
 }
-type initialStateType={
+type initialStateType = {
     UserData: UserDataType
 }
 
-const initialState:initialStateType = {
+const initialState: initialStateType = {
     UserData: {
         _id: '',
         email: '',
@@ -37,22 +37,22 @@ const initialState:initialStateType = {
         rememberMe: false,
         __v: null,
         tokenDeathTime: null,
-        token: null
-    }
+        token: null,
+    },
 };
 
-export type ActionsProfileType=ReturnType<typeof SetNewNameAC>
+export type ActionsProfileType = ReturnType<typeof SetNewNameAC>
     | ReturnType<typeof SetProfileAC>
-|ReturnType<typeof SetNewPhotoAC>
+    | ReturnType<typeof SetNewPhotoAC>
 
 export const profileReducer = (state: initialStateType = initialState, action: ActionsProfileType): initialStateType => {
     switch (action.type) {
-        case "SET-NEW-NAME":
-            return {...state, UserData:{...state.UserData, name: action.name}};
-        case "SET-PROFILE":
-            return {...state, UserData:{...state.UserData, ...action.profile} }
-        case "SET-NEW-PHOTO":
-            return {...state,UserData:{...state.UserData,avatar:action.photo}}
+        case 'SET-NEW-NAME':
+            return {...state, UserData: {...state.UserData, name: action.name}};
+        case 'SET-PROFILE':
+            return {...state, UserData: {...state.UserData, ...action.profile}};
+        case 'SET-NEW-PHOTO':
+            return {...state, UserData: {...state.UserData, avatar: action.photo}};
         default: {
             return state;
         }
@@ -60,42 +60,42 @@ export const profileReducer = (state: initialStateType = initialState, action: A
 };
 
 
-export const SetProfileAC=(profile:UserDataType)=>({
-    type:'SET-PROFILE',
-        profile
-}as const)
-export const SetNewNameAC = (name:string) => ({
+export const SetProfileAC = (profile: UserDataType) => ({
+    type: 'SET-PROFILE',
+    profile,
+} as const);
+export const SetNewNameAC = (name: string) => ({
     type: 'SET-NEW-NAME',
-    name
-}as const)
-export const SetNewPhotoAC=(photo:string)=>({
-    type:'SET-NEW-PHOTO',
-    photo
-} as const )
+    name,
+} as const);
+export const SetNewPhotoAC = (photo: string) => ({
+    type: 'SET-NEW-PHOTO',
+    photo,
+} as const);
 
-export const SetNameTC=(name:string):AppThunk=>(dispatch)=>{
+export const SetNameTC = (name: string): AppThunk => (dispatch) => {
 
-    ProfileAPI.changeNameorAvatar(name, '')
+    ProfileAPI.changeNameOrAvatar(name, '')
         .then(response => {
-            dispatch( SetNewNameAC(response.data.updatedUser.name))
+            dispatch(SetNewNameAC(response.data.updatedUser.name));
         })
         .catch((err: AxiosError<{ error: string }>) => {
             const error = err.response
                 ? err.response.data.error
-                : err.message
-            dispatch(setAppErrorAC(error))
-        })
-}
-export const SetPhotoTC=(avatar:any):AppThunk=>(dispatch)=>{
+                : err.message;
+            dispatch(setAppErrorAC(error));
+        });
+};
+export const SetPhotoTC = (avatar: any): AppThunk => (dispatch) => {
 
-    ProfileAPI.changeNameorAvatar('',avatar)
+    ProfileAPI.changeNameOrAvatar('', avatar)
         .then(response => {
-            dispatch( SetNewPhotoAC(response.data.updatedUser.avatar))
+            dispatch(SetNewPhotoAC(response.data.updatedUser.avatar));
         })
         .catch((err: AxiosError<{ error: string }>) => {
             const error = err.response
                 ? err.response.data.error
-                : err.message
-            dispatch(setAppErrorAC(error))
-        })
-}
+                : err.message;
+            dispatch(setAppErrorAC(error));
+        });
+};

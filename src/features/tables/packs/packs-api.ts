@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-const instance = axios.create({
-    baseURL: 'http://localhost:7542/2.0/',
-    withCredentials: true,
-});
+import {instance} from '../../../common/instance/instance';
 
 export const packsAPI = {
     getPacks(data: GetPacksParamsType = {}) {
@@ -56,8 +51,8 @@ export type GetPacksParamsType = {
     page?: number
     pageCount?: number
     user_id?: string
-    min?:number
-    max?:number
+    min?: number
+    max?: number
     sortPacks?: string
 }
 
