@@ -1,66 +1,53 @@
-import axios from "axios";
-
-const instance = axios.create({
-    baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-    withCredentials: true
-})
+import {instance} from '../../common/instance/instance';
 
 export const cardsAPI = {
-    // getCards(idCardPack: string) {
-    //     return instance.get<ResponseGetCardType>('/cards/card', {
-    //         params: {
-    //             cardsPack_id: idCardPack,
-    //         },
-    //
-    //     })
-    // },
     getCards(queryParam: getCardQueryParams) {
         return instance.get<ResponseGetCardType>('/cards/card', {
-            params: queryParam
-        })
+            params: queryParam,
+        });
     },
     createCard(data: RequestCreateCardType) {
-        return instance.post('/cards/card', data)
+        return instance.post('/cards/card', data);
     },
     deleteCard(cardID: string) {
         return instance.delete('/cards/card', {
             params: {
-                id: cardID
-            }
-        })
+                id: cardID,
+            },
+        });
     },
     updateCard(data: RequestUpdateCardType) {
-        return instance.put('/cards/card', data)
-    }
-}
+        return instance.put('/cards/card', data);
+    },
+};
 
 export type CardType = {
-    "_id": string
-    "cardsPack_id": string
-    "user_id": string
-    "answer": string
-    "question": string
-    "grade": number
-    "shots": number
-    "comments": string
-    "type": string
-    "rating": number
-    "more_id": string
-    "created": string
-    "updated": string
-    "__v": number
+    '_id': string
+    'cardsPack_id': string
+    'user_id': string
+    'answer': string
+    'question': string
+    'grade': number
+    'shots': number
+    'comments': string
+    'type': string
+    'rating': number
+    'more_id': string
+    'created': string
+    'updated': string
+    '__v': number
 }
 
 export type ResponseGetCardType = {
-    "cards": CardType[],
-    "packUserId": string
-    "page": number
-    "pageCount": number
-    "cardsTotalCount": number
-    "minGrade": number
-    "maxGrade": number
-    "token": string
-    "tokenDeathTime": number
+    'cards': CardType[],
+    'packUserId': string
+    'page': number
+    'pageCount': number
+    'cardsTotalCount': number
+    'minGrade': number
+    'maxGrade': number
+    'token': string
+    'tokenDeathTime': number
 }
 
 export type RequestCreateCardType = {
@@ -81,17 +68,17 @@ export type RequestUpdateCardType = {
     card: {
         _id: string
         question?: string
-        answer?:string
+        answer?: string
     }
 }
 
 export type getCardQueryParams = {
-    cardAnswer?:string
-    cardQuestion?:string
-    cardsPack_id?:string | undefined
-    min?:string
-    max?:string
-    sortCards?:string
-    page?:number
-    pageCount?:number
+    cardAnswer?: string
+    cardQuestion?: string
+    cardsPack_id?: string | undefined
+    min?: string
+    max?: string
+    sortCards?: string
+    page?: number
+    pageCount?: number
 }
