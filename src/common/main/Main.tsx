@@ -7,7 +7,7 @@ import {Error404} from '../../features/auth/error404/Error404';
 import {PasswordForgot} from '../../features/auth/passwordForgot/PasswordForgot';
 import {PasswordNew} from '../../features/auth/passwordNew/PasswordNew';
 import {Test} from '../../features/auth/test/Test';
-import {Packs} from '../../features/tables/packs/Packs';
+import {Packs} from '../../features/packs/Packs';
 import { Cards } from '../../features/cards/Cards';
 
 

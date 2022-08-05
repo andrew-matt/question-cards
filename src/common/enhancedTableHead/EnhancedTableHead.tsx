@@ -1,4 +1,4 @@
-import {ResponseCardPackType} from '../../features/tables/packs/packs-api';
+import {ResponseCardPackType} from '../../features/packs/packs-api';
 import React from 'react';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';

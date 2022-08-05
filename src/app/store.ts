@@ -14,7 +14,7 @@ import {ActionsPasswordNewType, passwordNewReducer} from '../features/auth/passw
 import {testReducer} from '../features/auth/test/test-reducer';
 import {ActionsAppReducerType, appReducer} from './app-reducer';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk';
-import {packsReducer, PacksReducerActionTypes} from '../features/tables/packs/packs-reducer';
+import {packsReducer, PacksReducerActionTypes} from '../features/packs/packs-reducer';
 import {ActionsCardsReducer, cardsReducer} from "../features/cards/cards-reducer";
 
 const rootReducer = combineReducers({
