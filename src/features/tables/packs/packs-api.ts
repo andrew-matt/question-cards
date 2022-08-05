@@ -52,11 +52,13 @@ type GetPacksResponseType = {
 }
 
 export type GetPacksParamsType = {
+    packName?: string
     page?: number
     pageCount?: number
     user_id?: string
     min?:number
     max?:number
+    sortPacks?: string
 }
 
 export type UpdatePackParamsType = {

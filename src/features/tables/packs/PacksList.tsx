@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,14 +8,14 @@ import Paper from '@mui/material/Paper';
 import {ResponseCardPackType} from './packs-api';
 import {
     changePack,
-    clearPacksList,
     fetchPacks,
     removePack,
     RequestedPacksType,
     setCurrentPackName,
     setCurrentPage,
     setPacksPerPage,
-    setRequestedPacks,
+    setPacksSortBy,
+    setPacksSortOrder,
 } from './packs-reducer';
 import {Box, IconButton, TablePagination, TextField} from '@mui/material';
 import {Delete, Edit, School} from '@mui/icons-material';
@@ -27,7 +27,6 @@ import Switch from '@mui/material/Switch';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 type PropsType = {
-    searchedPackList: ResponseCardPackType[],
     cardNumber: number[],
     min: number,
     max: number
@@ -36,7 +35,6 @@ type PropsType = {
 export const PacksList = (props: PropsType) => {
     const {max, min} = props;
 
-    const [order, setOrder] = React.useState<Order>('desc');
     const [orderBy, setOrderBy] = React.useState<keyof ResponseCardPackType>('updated');
     const [dense, setDense] = React.useState(false);
 
@@ -44,40 +42,29 @@ export const PacksList = (props: PropsType) => {
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
 
+    const dispatch = useAppDispatch();
+    const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
     const packsAmount = useAppSelector<number>(state => state.packs.packsAmount);
     const page = useAppSelector<number>(state => state.packs.currentPage);
     const pageCount = useAppSelector<number>(state => state.packs.packsPerPage);
     const user_id = useAppSelector<string>(state => state.profile.UserData._id);
     const requestedPacks = useAppSelector<RequestedPacksType>(state => state.packs.requestedPacks);
-    const dispatch = useAppDispatch();
+    const sortPacks = useAppSelector<string>(state => state.packs.sortBy);
+    const order = useAppSelector<Order>(state => state.packs.sortOrder);
+    const packName = useAppSelector<string>(state => state.packs.searchedValue);
 
-    useEffect(() => {
-        dispatch(fetchPacks({page, pageCount, user_id}));
-        return () => {
-            dispatch(setRequestedPacks(`User's`));
-            dispatch(setCurrentPage(1));
-            dispatch(clearPacksList());
-        };
-    }, []);
+    const queryParams = {page, pageCount, user_id, min, max, sortPacks, packName};
 
     const onPageChangeHandler = (event: unknown, newPage: number) => {
         const page = newPage + 1; // initially newPage value is equal to currentPage value
         dispatch(setCurrentPage(page));
-        if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
-        } else {
-            dispatch(fetchPacks({page, pageCount, min, max}));
-        }
+        dispatch(fetchPacks({...queryParams, page}, requestedPacks));
     };
 
     const onPacksPerPageChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         const pageCount = +e.target.value;
         dispatch(setPacksPerPage(pageCount));
-        if (requestedPacks === `User's`) {
-            dispatch(fetchPacks({page, pageCount, user_id, min, max}));
-        } else {
-            dispatch(fetchPacks({page, pageCount, min, max}));
-        }
+        dispatch(fetchPacks({...queryParams, pageCount}, requestedPacks));
     };
 
     const handleRequestSort = (
@@ -85,8 +72,11 @@ export const PacksList = (props: PropsType) => {
         property: keyof ResponseCardPackType,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
+        const sortPacks = `${isAsc ? 0 : 1}${property}`;
+        dispatch(setPacksSortOrder(isAsc ? 'desc' : 'asc'));
         setOrderBy(property);
+        dispatch(setPacksSortBy(sortPacks));
+        dispatch(fetchPacks({...queryParams, sortPacks}, requestedPacks));
     };
 
     const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +94,7 @@ export const PacksList = (props: PropsType) => {
                             onRequestSort={handleRequestSort}
                         />
                         <TableBody>
-                            {stableSort(props.searchedPackList, getComparator(order, orderBy))
+                            {stableSort(packs, getComparator(order, orderBy))
                                 .map((pack) => {
 
                                     const date = new Date(pack.updated);
@@ -134,7 +124,7 @@ export const PacksList = (props: PropsType) => {
                                     };
 
                                     const onDeleteButtonClickHandler = () => {
-                                        dispatch(removePack(pack._id, requestedPacks, {page, pageCount, user_id}));
+                                        dispatch(removePack(pack._id, requestedPacks, queryParams));
                                     };
 
                                     const onEditButtonClickHandler = () => {
@@ -208,7 +198,7 @@ export const PacksList = (props: PropsType) => {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    labelRowsPerPage={"Packs per page"}
+                    labelRowsPerPage={'Packs per page'}
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={packsAmount}
@@ -216,6 +206,8 @@ export const PacksList = (props: PropsType) => {
                     page={page - 1} // TablePagination component requires the first page to start with number 0
                     onPageChange={onPageChangeHandler}
                     onRowsPerPageChange={onPacksPerPageChangeHandler}
+                    showFirstButton
+                    showLastButton
                 />
             </Paper>
             <FormControlLabel
