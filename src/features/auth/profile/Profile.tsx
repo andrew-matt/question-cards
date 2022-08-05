@@ -12,7 +12,7 @@ import {EditableSpan} from './EditableSpan';
 import {Navigate, useNavigate} from 'react-router-dom';
 
 export const Profile = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate();
     const isLoggedIn = useSelector<AppRootStateType>(state => state.login.isLoggedIn);
     const profile = useSelector<AppRootStateType, UserDataType>(state => state.profile.UserData);
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -32,11 +32,12 @@ export const Profile = () => {
     };
 
     if (!isLoggedIn) {
-        return <Navigate to={'/login'}/>
+        return <Navigate to={'/login'}/>;
     }
-    const onBackClickHandler=()=>{
-        return navigate('/packs')
-    }
+
+    const onBackClickHandler = () => {
+        return navigate('/packs');
+    };
 
     return (
         <div className={style.mainBlock}>

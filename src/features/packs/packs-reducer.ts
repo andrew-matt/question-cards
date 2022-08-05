@@ -1,8 +1,8 @@
-import {AppThunk} from '../../../app/store';
-import {setAppRequestStatusAC} from '../../../app/app-reducer';
-import {GetPacksParamsType, packsAPI, ResponseCardPackType, UpdatePackParamsType} from './packs-api';
-import {handleServerNetworkError} from '../../../utils/error-utils';
-import {Order} from '../../../utils/sort-utils';
+import {AppRootStateType, AppThunk} from '../../app/store';
+import {setAppRequestStatusAC} from '../../app/app-reducer';
+import {packsAPI, ResponseCardPackType, UpdatePackParamsType} from './packs-api';
+import {handleServerNetworkError} from '../../utils/error-utils';
+import {Order} from '../../utils/sort-utils';
 
 const initialState = {
     packsList: [] as ResponseCardPackType[],
@@ -14,6 +14,7 @@ const initialState = {
     sortBy: '0updated',
     sortOrder: 'desc' as Order,
     searchedValue: '',
+    minAndMaxCardsAmount: [0, 110],
 };
 
 export const packsReducer = (state: InitialStateType = initialState, action: PacksReducerActionTypes): InitialStateType => {
@@ -33,11 +34,13 @@ export const packsReducer = (state: InitialStateType = initialState, action: Pac
         case 'packs/SET-CURRENT-PACK-NAME':
             return {...state, nameOfCurrentPack: action.name};
         case 'packs/SET-PACKS-SORT-BY':
-            return {...state, sortBy: action.sortBy}
+            return {...state, sortBy: action.sortBy};
         case 'packs/SET-PACKS-SORT-ORDER':
-            return {...state, sortOrder: action.sortOrder}
+            return {...state, sortOrder: action.sortOrder};
         case 'packs/SET-SEARCHED-VALUE':
-            return {...state, searchedValue: action.searchedValue}
+            return {...state, searchedValue: action.searchedValue};
+        case 'packs/SET-MIN-AND-MAX-CARDS-AMOUNT':
+            return {...state, minAndMaxCardsAmount: action.minAndMaxCardsAmount};
         default: {
             return state;
         }
@@ -58,11 +61,23 @@ export const setCurrentPackName = (name: string) => ({type: 'packs/SET-CURRENT-P
 export const setPacksSortBy = (sortBy: string) => ({type: 'packs/SET-PACKS-SORT-BY', sortBy} as const);
 export const setPacksSortOrder = (sortOrder: Order) => ({type: 'packs/SET-PACKS-SORT-ORDER', sortOrder} as const);
 export const setSearchedValue = (searchedValue: string) => ({type: 'packs/SET-SEARCHED-VALUE', searchedValue} as const);
+export const setMinAndMaxCardsAmount = (minAndMaxCardsAmount: number[]) => ({
+    type: 'packs/SET-MIN-AND-MAX-CARDS-AMOUNT',
+    minAndMaxCardsAmount,
+} as const);
 
 //thunks
-export const fetchPacks = (queryParams: GetPacksParamsType = {}, requestedPacks: RequestedPacksType): AppThunk => async (dispatch) => {
-    const {page, pageCount, user_id, min, max, sortPacks, packName} = queryParams;
+export const fetchPacks = (user_id?: string): AppThunk => async (dispatch, getState: () => AppRootStateType) => {
+    const state = getState().packs;
+    const page = state.currentPage;
+    const pageCount = state.packsPerPage;
+    const min = state.minAndMaxCardsAmount[0];
+    const max = state.minAndMaxCardsAmount[1];
+    const sortPacks = state.sortBy;
+    const packName = state.searchedValue;
+    const requestedPacks = state.requestedPacks;
     let response;
+
     try {
         dispatch(setAppRequestStatusAC('loading'));
 
@@ -82,17 +97,11 @@ export const fetchPacks = (queryParams: GetPacksParamsType = {}, requestedPacks:
     }
 };
 
-export const addPack = (queryParams: GetPacksParamsType = {}, requestedPacks: RequestedPacksType): AppThunk => async (dispatch) => {
-    const page = 1; // newPacks appear on the first page
-    const sortPacks = '0updated'
-    const sortOrder = 'desc'
+export const addPack = (user_id: string): AppThunk => async (dispatch) => {
     try {
         dispatch(setAppRequestStatusAC('loading'));
         await packsAPI.createPack();
-        dispatch(setCurrentPage(page));
-        dispatch(setPacksSortBy(sortPacks));
-        dispatch(setPacksSortOrder(sortOrder));
-        dispatch(fetchPacks({...queryParams, page, sortPacks}, requestedPacks));
+        dispatch(fetchPacks(user_id));
     } catch (e) {
         handleServerNetworkError(e, dispatch);
     } finally {
@@ -100,11 +109,11 @@ export const addPack = (queryParams: GetPacksParamsType = {}, requestedPacks: Re
     }
 };
 
-export const removePack = (packID: string, requestedPacks: RequestedPacksType, queryParams: GetPacksParamsType = {}): AppThunk => async (dispatch) => {
+export const removePack = (packID: string, user_id: string): AppThunk => async (dispatch) => {
     try {
         dispatch(setAppRequestStatusAC('loading'));
         await packsAPI.deletePack(packID);
-        dispatch(fetchPacks(queryParams, requestedPacks));
+        dispatch(fetchPacks(user_id));
     } catch (e) {
         handleServerNetworkError(e, dispatch);
     } finally {
@@ -112,11 +121,11 @@ export const removePack = (packID: string, requestedPacks: RequestedPacksType, q
     }
 };
 
-export const changePack = (updateData: UpdatePackParamsType, requestedPacks: RequestedPacksType, queryParams: GetPacksParamsType = {}): AppThunk => async (dispatch) => {
+export const changePack = (updateData: UpdatePackParamsType, user_id: string): AppThunk => async (dispatch) => {
     try {
         dispatch(setAppRequestStatusAC('loading'));
         await packsAPI.updatePack(updateData);
-        dispatch(fetchPacks(queryParams, requestedPacks));
+        dispatch(fetchPacks(user_id));
     } catch (e) {
         handleServerNetworkError(e, dispatch);
     } finally {
@@ -133,10 +142,11 @@ type setPacksAmountType = ReturnType<typeof setPacksAmount>
 type setPacksPerPageType = ReturnType<typeof setPacksPerPage>
 type setCurrentPageType = ReturnType<typeof setCurrentPage>
 type setRequestedPacksType = ReturnType<typeof setRequestedPacks>
-type  setCurrentNamePackType = ReturnType<typeof setCurrentPackName>
-type  setPacksSortByType = ReturnType<typeof setPacksSortBy>
-type  setPacksSortOrderType = ReturnType<typeof setPacksSortOrder>
-type  setSearchedValueType = ReturnType<typeof setSearchedValue>
+type setCurrentNamePackType = ReturnType<typeof setCurrentPackName>
+type setPacksSortByType = ReturnType<typeof setPacksSortBy>
+type setPacksSortOrderType = ReturnType<typeof setPacksSortOrder>
+type setSearchedValueType = ReturnType<typeof setSearchedValue>
+type setMinAndMaxCardsAmountType = ReturnType<typeof setMinAndMaxCardsAmount>
 
 export type PacksReducerActionTypes = setPacksListType
     | clearPacksListType
@@ -148,5 +158,6 @@ export type PacksReducerActionTypes = setPacksListType
     | setPacksSortByType
     | setPacksSortOrderType
     | setSearchedValueType
+    | setMinAndMaxCardsAmountType
 
 export type RequestedPacksType = `User's` | 'All'
