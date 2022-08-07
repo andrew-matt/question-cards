@@ -9,6 +9,8 @@ import {addCard, ClearCardsListAC,  getCards} from "./cards-reducer";
 import {CardsSearchByQuestion} from "./cards-search-by-question/CardsSearchByQuestion";
 import {CardsPagination} from "./cards-pagination/Cards-pagination";
 import { useAppDispatch, useAppSelector } from '../../common/hooks/hooks';
+import {CustomModal} from "../../modals/CustomModal";
+import {AddNewCardModal} from "../../modals/card/AddNewCardModal/AddNewCardModal";
 
 
 export const Cards: React.FC = () => {
@@ -48,6 +50,7 @@ export const Cards: React.FC = () => {
                 <CardsSearchByQuestion />
                 <CardsTable/>
                 <CardsPagination/>
+                <AddNewCardModal/>
             </div>
         </div>
     );
