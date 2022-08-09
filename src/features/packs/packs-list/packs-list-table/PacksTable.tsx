@@ -1,8 +1,8 @@
-import {getComparator, Order, stableSort} from '../../../../utils/sort-utils';
+import {getComparator, stableSort} from '../../../../utils/sort-utils';
 import {changePack, removePack, setCurrentPackName} from '../../packs-reducer';
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {IconButton, TextField} from '@mui/material';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import {Delete, Edit, School} from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -16,14 +16,16 @@ type PacksTablePropsType = {
 
 export const PacksTable = (props: PacksTablePropsType) => {
 
+    const navigate = useNavigate();
+
     const [editMode, setEditMode] = useState(false);
     const [changedPackID, setChangedPackID] = useState('');
     const [changedPackValue, setChangedPackValue] = useState('');
 
     const dispatch = useAppDispatch();
-    const packs = useAppSelector<ResponseCardPackType[]>(state => state.packs.packsList);
-    const user_id = useAppSelector<string>(state => state.profile.UserData._id);
-    const order = useAppSelector<Order>(state => state.packs.sortOrder);
+    const packs = useAppSelector(state => state.packs.packsList);
+    const user_id = useAppSelector(state => state.profile.UserData._id);
+    const order = useAppSelector(state => state.packs.sortOrder);
 
     return (
         <TableBody>
@@ -57,6 +59,10 @@ export const PacksTable = (props: PacksTablePropsType) => {
                         setEditMode(true);
                         setChangedPackValue(pack.name);
                         setChangedPackID(pack._id);
+                    };
+
+                    const onSchoolButtonClickHandler = () => {
+                        return navigate(`/learn/${pack._id}`);
                     };
 
                     const setCurrentPackNameHandler = () => {
@@ -112,7 +118,7 @@ export const PacksTable = (props: PacksTablePropsType) => {
                             <TableCell align={align}>{formattedDate}</TableCell>
                             <TableCell align={align}>{pack.user_name}</TableCell>
                             <TableCell align={align}>
-                                <IconButton disabled={true}>
+                                <IconButton onClick={onSchoolButtonClickHandler} disabled={pack.cardsCount === 0}>
                                     <School/>
                                 </IconButton>
                                 {showUserPackButtons()}
