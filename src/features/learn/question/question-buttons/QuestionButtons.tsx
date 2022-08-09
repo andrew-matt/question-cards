@@ -3,6 +3,7 @@ import React, {FC} from 'react';
 import {updateCardGrade} from '../../learn-reducer';
 import {CardGradeType} from '../../learn-api';
 import {useAppDispatch, useAppSelector} from '../../../../common/hooks/hooks';
+import style from '../Question.module.css';
 
 type QuestionButtonsPropsType = {
     showAnswer: boolean
@@ -28,13 +29,25 @@ export const QuestionButtons: FC<QuestionButtonsPropsType> = ({showAnswer, radio
     if (!showAnswer) {
         return (
             <div style={{marginTop: '30px'}}>
-                <Button variant={'contained'} fullWidth onClick={onShowAnswerClickHandler}>SHOW ANSWER</Button>
+                <Button
+                    variant={'contained'}
+                    onClick={onShowAnswerClickHandler}
+                    className={style.buttons}
+                >
+                    SHOW ANSWER
+                </Button>
             </div>
         );
     } else {
         return (
             <div style={{marginTop: '30px'}}>
-                <Button variant={'contained'} fullWidth onClick={onNextQuestionClickHandler}>NEXT QUESTION</Button>
+                <Button
+                    variant={'contained'}
+                    onClick={onNextQuestionClickHandler}
+                    className={style.buttons}
+                >
+                    NEXT QUESTION
+                </Button>
             </div>
         );
     }

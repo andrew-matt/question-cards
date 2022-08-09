@@ -1,11 +1,11 @@
 import React, {ChangeEvent, FC} from 'react';
-import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import {useAppSelector} from '../../../../common/hooks/hooks';
+import style from '../Question.module.css';
 
 type QuestionRadioPropsType = {
     showAnswer: boolean
@@ -24,12 +24,14 @@ export const QuestionRadio: FC<QuestionRadioPropsType> = ({showAnswer, radioValu
     if (showAnswer) {
         return (
             <>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Answer:
-                </Typography>
-                <Typography id="modal-modal-description" sx={{mt: 2}}>
-                    {card.answer}
-                </Typography>
+                <div className={style.questionAndAnswer}>
+                    <div className={style.questionAndAnswerTitle}>
+                        Answer:
+                    </div>
+                    <div className={style.questionAndAnswerText}>
+                        {card.answer}
+                    </div>
+                </div>
                 <FormControl>
                     <FormLabel id="demo-controlled-radio-buttons-group">Rate yourself:</FormLabel>
                     <RadioGroup
@@ -48,6 +50,6 @@ export const QuestionRadio: FC<QuestionRadioPropsType> = ({showAnswer, radioValu
             </>
         );
     } else {
-        return <></>
+        return <></>;
     }
 };

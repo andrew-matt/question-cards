@@ -1,12 +1,17 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {getCard} from '../../../utils/random-utils';
 import {useAppDispatch, useAppSelector} from '../../../common/hooks/hooks';
 import {setCard} from '../learn-reducer';
-import style from '../Learn.module.css';
+import style from './Question.module.css';
 import {QuestionButtons} from './question-buttons/QuestionButtons';
 import {QuestionRadio} from './question-radio/QuestionRadio';
+import TargetIcon from '../../../assets/img/Target.png';
 
-export const Question = () => {
+type QuestionPropsType = {
+    packName: string
+}
+
+export const Question: FC<QuestionPropsType> = ({packName}) => {
 
     const dispatch = useAppDispatch();
 
@@ -22,15 +27,27 @@ export const Question = () => {
 
     return (
         <div className={style.questionContainer}>
+            <div className={style.packName}>
+                <span>Learn </span>
+                <span className={style.packNameTitle}>"{packName}"</span>
+            </div>
             <div className={style.questionWrapper}>
-                <div>
-                    number of attempts to answer the question: {card.shots}
+                <div className={style.attempts}>
+                    <img src={TargetIcon} width={'15px'} height={'15px'} alt={'target image'}/>
+                    <span className={style.attemptsTitle}>
+                            number of attempts to answer the question:
+                    </span>
+                    <span className={style.attemptsAmount}>
+                            {card.shots}
+                    </span>
                 </div>
-                <div>
-                    Question:
-                </div>
-                <div>
-                    {card && card.question}
+                <div className={style.questionAndAnswer}>
+                    <div className={style.questionAndAnswerTitle}>
+                        Question:
+                    </div>
+                    <div className={style.questionAndAnswerText}>
+                        {card && card.question}
+                    </div>
                 </div>
                 <QuestionRadio showAnswer={showAnswer} radioValue={radioValue} setRadioValue={setRadioValue}/>
                 <QuestionButtons showAnswer={showAnswer} radioValue={radioValue} setShowAnswer={setShowAnswer}/>

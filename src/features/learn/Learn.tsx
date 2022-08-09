@@ -19,6 +19,7 @@ export const Learn = () => {
     const navigate = useNavigate();
 
     const pageCount = packs.filter((pack) => pack._id === cardsPack_id)[0].cardsCount;
+    const packName = packs.filter((pack) => pack._id === cardsPack_id)[0].name;
 
     useEffect(() => {
         dispatch(getCards({cardsPack_id, pageCount}));
@@ -30,11 +31,11 @@ export const Learn = () => {
     };
 
     if (cards.length === 0) {
-        return <div
-            style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
-            <CircularProgress/>
-        </div>;
-
+        return (
+            <div className={style.circleLoading}>
+                <CircularProgress/>
+            </div>
+        );
     }
 
     return (
@@ -43,7 +44,7 @@ export const Learn = () => {
                 <KeyboardBackspaceIcon/>
                 <span onClick={onBackToPacksListClickHandler} className={style.link}>Back to Packs List</span>
             </div>
-            <Question/>
+            <Question packName={packName}/>
         </div>
     );
 };
