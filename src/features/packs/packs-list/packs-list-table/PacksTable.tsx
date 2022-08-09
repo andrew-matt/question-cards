@@ -1,14 +1,15 @@
 import {getComparator, Order, stableSort} from '../../../../utils/sort-utils';
-import {changePack, removePack, setCurrentPackName} from '../../packs-reducer';
+import {changePack, setCurrentPackName} from '../../packs-reducer';
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {IconButton, TextField} from '@mui/material';
 import {NavLink} from 'react-router-dom';
-import {Delete, Edit, School} from '@mui/icons-material';
+import {Edit, School} from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import {ResponseCardPackType} from '../../packs-api';
 import {useAppDispatch, useAppSelector} from '../../../../common/hooks/hooks';
+import {DeleteModal} from "../../../../common/modals/customModals/packsList/DeleteModal";
 
 type PacksTablePropsType = {
     orderBy: keyof ResponseCardPackType
@@ -49,10 +50,6 @@ export const PacksTable = (props: PacksTablePropsType) => {
                         if (e.key === 'Enter') packChange();
                     };
 
-                    const onDeleteButtonClickHandler = () => {
-                        dispatch(removePack(pack._id, user_id));
-                    };
-
                     const onEditButtonClickHandler = () => {
                         setEditMode(true);
                         setChangedPackValue(pack.name);
@@ -90,9 +87,7 @@ export const PacksTable = (props: PacksTablePropsType) => {
                         if (user_id === pack.user_id) {
                             return (
                                 <>
-                                    <IconButton onClick={onDeleteButtonClickHandler}>
-                                        <Delete/>
-                                    </IconButton>
+                                    <DeleteModal packId={pack._id} userId={pack.user_id} packName={pack.name}/>
                                     <IconButton onClick={onEditButtonClickHandler}>
                                         <Edit/>
                                     </IconButton>
