@@ -1,11 +1,11 @@
-import Box from '@mui/material/Box/Box';
-import Button from '@mui/material/Button/Button';
-import Modal from '@mui/material/Modal/Modal';
-import Typography from '@mui/material/Typography/Typography';
-import React, {ReactNode} from 'react';
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import {FC, ReactNode} from "react";
+import CloseIcon from '@mui/icons-material/Close';
+import style from './CustomModal.module.css'
 
-
-const style = {
+const BoxStyle = {
     position: 'absolute' as 'absolute',
     top: '50%',
     left: '50%',
@@ -17,29 +17,35 @@ const style = {
     p: 4,
 };
 
-type CustomModalPropsType = {
-    children: ReactNode,
+type PropsType = {
+    children: ReactNode
+    open: boolean,
+    handleClose: () => void
+    modalName: string
 }
 
+export const CustomModal: FC<PropsType> = ({
+                                               children, open,
+                                               modalName, handleClose
+                                           }) => {
 
-export const CustomModal: React.FC<CustomModalPropsType> = ({children}) => {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
     return (
-        <div>
-            <Button onClick={handleOpen}>Open modal</Button>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    {children}
-                </Box>
-            </Modal>
-        </div>
+
+        <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <Box sx={BoxStyle}>
+                <div className={style.header}>
+                    <span>{modalName}</span>
+                    <CloseIcon onClick={handleClose} fontSize={'small'}/>
+                </div>
+                <hr/>
+                {children}
+            </Box>
+        </Modal>
     );
-};
+}

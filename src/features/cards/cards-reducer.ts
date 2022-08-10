@@ -146,13 +146,13 @@ export const deleteCard = (cardID: string, cardsPackID: string): AppThunk => (di
         })
 }
 
-export const updateCard = (cardID: string, cardsPackID: string): AppThunk => (dispatch, getState) => {
+export const updateCard = (cardID: string, cardsPackID: string,question:string,answer:string): AppThunk => (dispatch, getState) => {
     dispatch(setAppRequestStatusAC('loading'))
     cardsAPI.updateCard({
         card: {
             _id: cardID,
-            question: "updated question",
-            answer: "updated answer"
+            question,
+            answer
         }
     })
         .then((res) => {

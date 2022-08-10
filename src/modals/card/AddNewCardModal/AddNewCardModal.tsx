@@ -10,10 +10,17 @@ import {addCard} from "../../../features/cards/cards-reducer";
 import {useParams} from "react-router-dom";
 import {RequestCreateCardType} from "../../../features/cards/cards-api";
 
-export const AddNewCardModal = () => {
+type AddNewCardModalPropsType = {
+    isDisabled:boolean
+}
+
+export const AddNewCardModal:React.FC<AddNewCardModalPropsType> = ({isDisabled}) => {
     const {cardsPackID} = useParams()
     const [textQuestion, setTextQuestion] = useState('')
     const [textAnswer, setTextAnswer] = useState('')
+    const [isOpen,setIsOpen] = useState(false)
+    const handleClose = () => setIsOpen(false);
+    const handleOpen = () => setIsOpen(true);
 
     const dispatch = useAppDispatch()
 
@@ -26,18 +33,21 @@ export const AddNewCardModal = () => {
             }
         }
         dispatch(addCard(data))
+        setIsOpen(false)
     }
 
     return (
-        <CustomModal>
+        <>
+        <Button onClick={handleOpen} variant={"contained"} disabled={isDisabled}>add card</Button>
+        <CustomModal modalName={'Add new card'} open={isOpen} handleClose={handleClose}>
             <div className={style.cardModal__wrapper}>
-                <h2 className={style.cardModal__title}>Add new card</h2>
-                <h4 className={style.cardModal__text}>Choose a question format</h4>
+                <h4 className={style.addCardModal__text}>Choose a question format</h4>
                 <AddNewCardSelectFormatQuestion/>
                 <AddNewCardModalQuestion question={textQuestion} setQuestion={setTextQuestion}/>
                 <AddNewCardModalAnswer answer={textAnswer} setAnswer={setTextAnswer}/>
-                <Button variant="contained" onClick={addCardHandler}>Contained</Button>
+                <Button variant="contained" onClick={addCardHandler}>Add</Button>
             </div>
         </CustomModal>
+        </>
     );
 };

@@ -40,17 +40,11 @@ export const Cards: React.FC = () => {
             <div className={style.cards__wrapper}>
                 <header className={style.cards__header}>
                     <h2 className={style.cards__title}>{currentPackName}</h2>
-                    <Button
-                        variant="contained"
-                        onClick={addCardHandler}
-                        disabled={userID !== cardsUserID}
-                    >Add task
-                    </Button>
+                     <AddNewCardModal isDisabled={userID !== cardsUserID}/>
                 </header>
                 <CardsSearchByQuestion />
                 <CardsTable/>
                 <CardsPagination/>
-                <AddNewCardModal/>
             </div>
         </div>
     );
