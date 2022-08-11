@@ -34,6 +34,8 @@ export const AddNewCardModal:React.FC<AddNewCardModalPropsType> = ({isDisabled})
         }
         dispatch(addCard(data))
         setIsOpen(false)
+        setTextAnswer('')
+        setTextQuestion('')
     }
 
     return (

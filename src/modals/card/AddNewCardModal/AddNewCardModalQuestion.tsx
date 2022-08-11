@@ -25,6 +25,7 @@ export const AddNewCardModalQuestion:React.FC<AddNewCardModalQuestionPropsType> 
                 variant="standard"
                 value={question}
                 onChange={setQuestionHandler}
+                style={{width:"100%", margin:"15px 0"}}
             />
         </div>
     );

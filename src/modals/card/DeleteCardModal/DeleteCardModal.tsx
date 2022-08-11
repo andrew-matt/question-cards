@@ -32,7 +32,7 @@ export const DeleteCardModal:React.FC<DeleteCardModalPropsType> = ({cardPackID,c
                 <div className={style.cardModal__wrapper}>
                     <p className={style.deleteCardModal__text}>Do you really want to remove card?
                     </p>
-                    <div>
+                    <div className={style.cardModal__buttons}>
                         <Button variant={"contained"} color={"inherit"} onClick={handleClose}>Cancel</Button>
                         <Button variant={"contained"} color={"error"} onClick={handleDeleteCard}>Delete</Button>
                     </div>
