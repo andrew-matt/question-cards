@@ -33,7 +33,7 @@ export const Question: FC<QuestionPropsType> = ({packName}) => {
             </div>
             <div className={style.questionWrapper}>
                 <div className={style.attempts}>
-                    <img src={TargetIcon} width={'15px'} height={'15px'} alt={'target image'}/>
+                    <img src={TargetIcon} width={'15px'} height={'15px'} alt={'target'}/>
                     <span className={style.attemptsTitle}>
                             number of attempts to answer the question:
                     </span>

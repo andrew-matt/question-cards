@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useNavigate, useParams} from 'react-router-dom';
+import {Navigate, useNavigate, useParams} from 'react-router-dom';
 import style from './Learn.module.css';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import {Question} from './question/Question';
@@ -18,12 +18,22 @@ export const Learn = () => {
 
     const navigate = useNavigate();
 
-    const pageCount = packs.filter((pack) => pack._id === cardsPack_id)[0].cardsCount;
-    const packName = packs.filter((pack) => pack._id === cardsPack_id)[0].name;
+    let pageCount = 110;
+    let packName = '';
+
+    // const pageCount = packs.filter((pack) => pack._id === cardsPack_id)[0].cardsCount;
+    // const packName = packs.filter((pack) => pack._id === cardsPack_id)[0].name;
 
     useEffect(() => {
         dispatch(getCards({cardsPack_id, pageCount}));
     }, []);
+
+    const pack = packs.find((pack) => pack._id === cardsPack_id)
+
+    if (pack) {
+        pageCount = pack.cardsCount
+        packName = pack.name
+    }
 
     const onBackToPacksListClickHandler = () => {
         dispatch(ClearCardsListAC());
@@ -36,6 +46,10 @@ export const Learn = () => {
                 <CircularProgress/>
             </div>
         );
+    }
+
+    if (packs.length === 0) {
+        return <Navigate to={'/packs'}/>
     }
 
     return (
