@@ -97,10 +97,10 @@ export const fetchPacks = (user_id?: string): AppThunk => async (dispatch, getSt
     }
 };
 
-export const addPack = (user_id: string): AppThunk => async (dispatch) => {
+export const addPack = (user_id: string,name:string,isPrivate:boolean): AppThunk => async (dispatch) => {
     try {
         dispatch(setAppRequestStatusAC('loading'));
-        await packsAPI.createPack();
+        await packsAPI.createPack(name,isPrivate);
         dispatch(fetchPacks(user_id));
     } catch (e) {
         handleServerNetworkError(e, dispatch);
