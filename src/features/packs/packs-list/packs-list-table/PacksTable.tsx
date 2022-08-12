@@ -1,13 +1,13 @@
-import {changePack, removePack, setCurrentPackName} from '../../packs-reducer';
+import {changePack, setCurrentPackName} from '../../packs-reducer';
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {IconButton, TextField} from '@mui/material';
 import {NavLink, useNavigate} from 'react-router-dom';
-import {Delete, Edit, School} from '@mui/icons-material';
+import {Edit, School} from '@mui/icons-material';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import {useAppDispatch, useAppSelector} from '../../../../common/hooks/hooks';
-import {DeleteModal} from "../../../../common/modals/customModals/packsList/DeleteModal";
+import {DeleteModal} from '../../../../common/modals/customModals/packsList/DeleteModal';
 
 export const PacksTable = () => {
 
@@ -44,11 +44,11 @@ export const PacksTable = () => {
                     if (e.key === 'Enter') packChange();
                 };
 
-                    const onEditButtonClickHandler = () => {
-                        setEditMode(true);
-                        setChangedPackValue(pack.name);
-                        setChangedPackID(pack._id);
-                    };
+                const onEditButtonClickHandler = () => {
+                    setEditMode(true);
+                    setChangedPackValue(pack.name);
+                    setChangedPackID(pack._id);
+                };
 
                 const onSchoolButtonClickHandler = () => {
                     return navigate(`/learn/${pack._id}`);
@@ -81,18 +81,18 @@ export const PacksTable = () => {
                     }
                 };
 
-                    const showUserPackButtons = () => {
-                        if (user_id === pack.user_id) {
-                            return (
-                                <>
-                                    <DeleteModal packId={pack._id} userId={pack.user_id} packName={pack.name}/>
-                                    <IconButton onClick={onEditButtonClickHandler}>
-                                        <Edit/>
-                                    </IconButton>
-                                </>
-                            );
-                        }
-                    };
+                const showUserPackButtons = () => {
+                    if (user_id === pack.user_id) {
+                        return (
+                            <>
+                                <DeleteModal packId={pack._id} userId={pack.user_id} packName={pack.name}/>
+                                <IconButton onClick={onEditButtonClickHandler}>
+                                    <Edit/>
+                                </IconButton>
+                            </>
+                        );
+                    }
+                };
 
                 const align = 'left';
 
